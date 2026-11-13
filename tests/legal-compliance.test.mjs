@@ -55,34 +55,40 @@ test('no incomplete-template language is presented as a final agreement', () => 
   }
 });
 
-test('no fabricated business identity: unknown details stay as flagged placeholders', () => {
-  // With no env vars set, placeholders must appear rather than invented facts.
+test('business identity is BloomRCM with bloomrcm@gmail.com; still-unknown details stay flagged', () => {
+  // Owner-supplied facts (2026-11-13): business is BloomRCM
+  // (https://bloomrcm.vercel.app), one business/support inbox for now.
+  assert.equal(LEGAL_ENTITY.legalName, 'BloomRCM');
+  assert.equal(LEGAL_ENTITY.dba, 'BloomAR Manager');
+  assert.equal(LEGAL_ENTITY.supportEmail, 'bloomrcm@gmail.com');
+  assert.equal(LEGAL_ENTITY.privacyEmail, 'bloomrcm@gmail.com');
+  assert.equal(LEGAL_ENTITY.securityEmail, 'bloomrcm@gmail.com');
+  assert.equal(LEGAL_ENTITY.legalEmail, 'bloomrcm@gmail.com');
+  assert.equal(LEGAL_ENTITY.website, 'https://bloomrcm.vercel.app');
+  const allLegal = LEGAL_SLUGS.map((s) => textOf(docs[s])).join('\n');
+  assert.match(allLegal, /BloomRCM/);
+  assert.match(allLegal, /bloomrcm@gmail\.com/);
+  assert.equal(/Northwind/i.test(allLegal), false, 'no test/preview business name may appear');
+  // Details the owner has NOT supplied must still appear as placeholders,
+  // never as invented facts (no Inc./LLC suffix, address, or governing state).
   const placeholders = findPlaceholders(docs.terms);
-  assert.ok(placeholders.includes('[[LEGAL_ENTITY_NAME]]'), 'entity name is a placeholder');
   assert.ok(placeholders.includes('[[GOVERNING_STATE]]'), 'governing state is a placeholder');
   // Effective date lives in the document metadata, not the block list.
   assert.match(docs.terms.effectiveDate, /^\[\[EFFECTIVE_DATE\]\]$/);
   assert.equal(findPlaceholders({ ...docs.terms, blocks: [{ type: 'p', text: docs.terms.effectiveDate }] }).includes('[[EFFECTIVE_DATE]]'), true);
 
-  // Placeholder values must be visibly unnatural, never a plausible fake.
-  assert.match(LEGAL_ENTITY.legalName, /^\[\[LEGAL_ENTITY_NAME\]\]$/);
+  // Unknown values must be visibly unnatural, never a plausible fake.
+  assert.match(LEGAL_ENTITY.addressLine1, /^\[\[LEGAL_ADDRESS_LINE1\]\]$/);
   assert.equal(LEGAL_ENTITY.country, 'United States');
-  assert.ok(missingBusinessInfo().length >= 8, 'missing-info reporting lists the gaps');
+  assert.ok(missingBusinessInfo().length >= 5, 'missing-info reporting lists the gaps');
 
   // No phone number, street number, or email address is invented anywhere.
   for (const slug of LEGAL_SLUGS) {
     const all = textOf(docs[slug]);
     const emails = [...all.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g)].map((m) => m[0]);
     for (const email of emails) {
-      assert.ok(
-        /@(example\.(com|org|net)|your-|placeholder)/i.test(email) || /^\[\[/.test(email) === false,
-        `${slug}: unexpected hard-coded email ${email}`
-      );
-      // The only literal domains allowed are reserved documentation domains.
-      assert.ok(
-        /@(example\.com|example\.org)$/i.test(email),
-        `${slug}: email ${email} must be a placeholder, not a real address`
-      );
+      // The only literal email allowed is the owner's own business inbox.
+      assert.equal(email, 'bloomrcm@gmail.com', `${slug}: unexpected hard-coded email ${email}`);
     }
     const phones = [...all.matchAll(/\(?\d{3}\)?[ .-]\d{3}[ .-]\d{4}/g)].map((m) => m[0]);
     assert.equal(phones.length, 0, `${slug}: no invented phone numbers (${phones.join(', ')})`);
@@ -346,7 +352,7 @@ test('BAA reflects real capability and never claims HIPAA certification', () => 
   assert.match(baa, /Subcontractor/i);
   assert.match(baa, /Security Incident/i);
   assert.match(baa, /60 calendar days/);
-  assert.match(baa, /does not mean BloomAR is .HIPAA certified./i);
+  assert.match(baa, /does not mean BloomRCM is .HIPAA certified./i);
   assert.match(baa, /HIPAA does not issue certification for software/i);
 
   // Capability claims must match the schema/implementation.
@@ -579,4 +585,17 @@ test('webhook records terms acceptance and refund state, matching the billing po
   assert.match(hook, /processedWebhooks/);
   // Grace period remains the documented 7 days.
   assert.match(hook, /7 \* 24 \* 60 \* 60 \* 1000/);
+});
+
+test('website and software surfaces use BloomRCM and bloomrcm@gmail.com', () => {
+  const site = read('src/lib/site-content-shared.ts');
+  assert.match(site, /businessName: 'BloomRCM'/);
+  assert.match(site, /businessWebsite: 'https:\/\/bloomrcm\.vercel\.app'/);
+  assert.match(site, /supportEmail: 'bloomrcm@gmail\.com'/);
+  assert.match(read('src/components/marketing/Marketing.tsx'), /bloomrcm@gmail\.com|supportEmail/);
+  assert.match(read('src/app/contact/page.tsx'), /bloomrcm@gmail\.com/);
+  assert.match(read('src/app/contact/page.tsx'), /bloomrcm\.vercel\.app/);
+  assert.match(read('.env.example'), /LEGAL_ENTITY_NAME=BloomRCM/);
+  assert.match(read('.env.example'), /LEGAL_SUPPORT_EMAIL=bloomrcm@gmail\.com/);
+  assert.equal(/Northwind/i.test(read('src/lib/legal/entity.ts')), false);
 });

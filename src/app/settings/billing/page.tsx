@@ -161,7 +161,7 @@ function BillingSettingsInner() {
                       setMsg(
                         r.ok
                           ? d.message || 'Cancelled. Your subscription will not renew.'
-                          : d.error || 'Cancellation failed. Contact support.'
+                          : d.error || 'Cancellation failed. Contact support at bloomrcm@gmail.com.'
                       );
                       loadBilling();
                     }}

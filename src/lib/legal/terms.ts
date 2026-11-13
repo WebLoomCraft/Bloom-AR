@@ -13,7 +13,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
     title: 'Terms of Service',
     shortTitle: 'Terms',
     summary:
-      'The contract between your organization and BloomAR for use of the BloomAR Manager billing and accounts-receivable platform.',
+      'The contract between your organization and BloomRCM for use of the BloomAR Manager billing and accounts-receivable platform.',
     effectiveDate: '[[EFFECTIVE_DATE]]',
     lastUpdated: '[[LAST_UPDATED_DATE]]',
     version: '1.0',
@@ -31,7 +31,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
         type: 'p',
         text: `These Terms of Service ("**Terms**") are a binding agreement between ${entityFullName(
           E
-        )} ("**BloomAR**," "**we**," "**us**") and the organization that registers for, purchases, or uses the BloomAR Manager platform ("**Customer**," "**you**"). If you are accepting these Terms for an employer, practice, billing company, or other legal entity, you represent that you have authority to bind that entity, and "you" refers to that entity.`,
+        )} ("**BloomRCM**," "**we**," "**us**") and the organization that registers for, purchases, or uses the BloomAR Manager platform ("**Customer**," "**you**"). If you are accepting these Terms for an employer, practice, billing company, or other legal entity, you represent that you have authority to bind that entity, and "you" refers to that entity.`,
       },
       {
         type: 'p',
@@ -80,11 +80,11 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
           E
         )} is the legal entity that operates the BloomAR Manager product. Its principal place of business is ${postalAddressOneLine(
           E
-        )}. BloomAR is organized under the laws of the State of [[LEGAL_INCORPORATION_STATE]].`,
+        )}. BloomRCM is organized under the laws of the State of [[LEGAL_INCORPORATION_STATE]].`,
       },
       {
         type: 'p',
-        text: 'These Terms govern the software and workflow-management Service. They do not govern the medical, clinical, billing, or collection services that Customer provides to its own patients or clients, and they do not create a physician-patient, fiduciary, or provider relationship between BloomAR and any patient.',
+        text: 'These Terms govern the software and workflow-management Service. They do not govern the medical, clinical, billing, or collection services that Customer provides to its own patients or clients, and they do not create a physician-patient, fiduciary, or provider relationship between BloomRCM and any patient.',
       },
       {
         type: 'h2',
@@ -97,9 +97,9 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       {
         type: 'callout',
         tone: 'info',
-        title: 'What BloomAR does not do',
+        title: 'What BloomRCM does not do',
         text:
-          'BloomAR provides software and workflow-management tools only. BloomAR does not provide medical care or clinical advice, does not make or influence insurance coverage or medical-necessity determinations, does not act as a health plan, does not act as Customer\u2019s billing agent or collection agency, and does not guarantee that any claim will be paid, that any denial will be overturned, or that any amount of reimbursement will be recovered. Decisions about coding, billing, submission, and appeal remain Customer\u2019s responsibility.',
+          'Through BloomAR Manager, BloomRCM provides software and workflow-management tools only. Under these Terms BloomRCM does not provide medical care or clinical advice, does not make or influence insurance coverage or medical-necessity determinations, and does not act as a health plan, and BloomAR Manager does not guarantee that any claim will be paid, that any denial will be overturned, or that any amount of reimbursement will be recovered. Any medical billing or revenue-cycle services BloomRCM may provide to a practice are supplied only under a separate written services agreement and are not provided by, or governed by, BloomAR Manager or these Terms. Decisions about coding, billing, submission, and appeal made in BloomAR Manager remain Customer\u2019s responsibility.',
       },
       {
         type: 'p',
@@ -111,11 +111,11 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Subject to these Terms and payment of applicable fees, BloomAR grants Customer a limited, non-exclusive, non-transferable, non-sublicensable, revocable right during the Subscription Term to access and use the Service for Customer\u2019s internal business purposes, and to permit Authorized Users to do the same on Customer\u2019s behalf.',
+        text: 'Subject to these Terms and payment of applicable fees, BloomRCM grants Customer a limited, non-exclusive, non-transferable, non-sublicensable, revocable right during the Subscription Term to access and use the Service for Customer\u2019s internal business purposes, and to permit Authorized Users to do the same on Customer\u2019s behalf.',
       },
       {
         type: 'p',
-        text: 'The licence is limited to the number of seats, practices, and monthly claim volumes associated with Customer\u2019s plan, as described on the pricing page and enforced by the Service. BloomAR may measure usage and may refuse to create additional members or claims that exceed the plan limits until Customer upgrades. Enterprise limits described as "fair use" are governed by the written order form or the terms quoted to Customer.',
+        text: 'The licence is limited to the number of seats, practices, and monthly claim volumes associated with Customer\u2019s plan, as described on the pricing page and enforced by the Service. BloomRCM may measure usage and may refuse to create additional members or claims that exceed the plan limits until Customer upgrades. Enterprise limits described as "fair use" are governed by the written order form or the terms quoted to Customer.',
       },
       {
         type: 'p',
@@ -134,7 +134,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
           'You must verify your email address where verification is enabled, and you must maintain the security of your credentials, multi-factor authentication devices, and recovery codes.',
           'Credentials are personal. You must not share an Authorized User account, and you must not create accounts to circumvent seat limits, suspension, or a prior termination.',
           'You must notify us promptly at [[SECURITY_EMAIL]] if you believe credentials have been compromised.',
-          'BloomAR may decline, suspend, or close registrations where it reasonably believes the information is false, the account is being used for unlawful purposes, or the account would create a security, sanctions, or legal risk.',
+          'BloomRCM may decline, suspend, or close registrations where it reasonably believes the information is false, the account is being used for unlawful purposes, or the account would create a security, sanctions, or legal risk.',
         ],
       },
       {
@@ -151,7 +151,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Roles and permissions are enforced by the Service, including a read-only role and role-based restrictions on administrative actions. Customer acknowledges that role configuration is a Customer responsibility and that BloomAR does not audit whether Customer\u2019s assigned roles match Customer\u2019s internal policies. BloomAR personnel do not access Customer Data except as described in the Privacy Policy and, where PHI is involved, the Business Associate Agreement.',
+        text: 'Roles and permissions are enforced by the Service, including a read-only role and role-based restrictions on administrative actions. Customer acknowledges that role configuration is a Customer responsibility and that BloomRCM does not audit whether Customer\u2019s assigned roles match Customer\u2019s internal policies. BloomRCM personnel do not access Customer Data except as described in the Privacy Policy and, where PHI is involved, the Business Associate Agreement.',
       },
       {
         type: 'callout',
@@ -183,7 +183,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       { type: 'h3', text: 'Payment authorization and processing' },
       {
         type: 'p',
-        text: 'By starting a paid subscription, Customer authorizes BloomAR and its payment processor to charge the payment method supplied, on a recurring basis, for the plan and interval selected, together with applicable taxes, until the subscription is cancelled. Payments are processed by Stripe, Inc. BloomAR does not receive or store full payment card numbers; card data is collected and stored by Stripe under its own terms and privacy policy.',
+        text: 'By starting a paid subscription, Customer authorizes BloomRCM and its payment processor to charge the payment method supplied, on a recurring basis, for the plan and interval selected, together with applicable taxes, until the subscription is cancelled. Payments are processed by Stripe, Inc. BloomRCM does not receive or store full payment card numbers; card data is collected and stored by Stripe under its own terms and privacy policy.',
       },
       {
         type: 'p',
@@ -196,12 +196,12 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Where required by applicable state automatic-renewal law, BloomAR will provide renewal notices and a compliant online cancellation path, and will not treat a free trial as consent to a paid subscription unless Customer has clearly agreed to the paid terms. {{COUNSEL: confirm automatic-renewal notice and cancellation requirements for every state where customers are located}}',
+        text: 'Where required by applicable state automatic-renewal law, BloomRCM will provide renewal notices and a compliant online cancellation path, and will not treat a free trial as consent to a paid subscription unless Customer has clearly agreed to the paid terms. {{COUNSEL: confirm automatic-renewal notice and cancellation requirements for every state where customers are located}}',
       },
       { type: 'h3', text: 'Taxes' },
       {
         type: 'p',
-        text: 'Fees are exclusive of all sales, use, excise, value-added, gross-receipts, and similar taxes, and of any withholding required by law, other than taxes on BloomAR\u2019s net income. Customer is responsible for such taxes, and BloomAR may add them to invoices where it is registered or required to collect them. If Customer claims an exemption, Customer must provide valid documentation, and the exemption applies prospectively from the date accepted.',
+        text: 'Fees are exclusive of all sales, use, excise, value-added, gross-receipts, and similar taxes, and of any withholding required by law, other than taxes on BloomRCM\u2019s net income. Customer is responsible for such taxes, and BloomRCM may add them to invoices where it is registered or required to collect them. If Customer claims an exemption, Customer must provide valid documentation, and the exemption applies prospectively from the date accepted.',
       },
       { type: 'h3', text: 'Enterprise and invoiced subscriptions' },
       {
@@ -215,7 +215,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR may modify or end a trial early if it reasonably believes the trial is being used to obtain repeated free access, or if Customer breaches these Terms.',
+        text: 'BloomRCM may modify or end a trial early if it reasonably believes the trial is being used to obtain repeated free access, or if Customer breaches these Terms.',
       },
       {
         type: 'h2',
@@ -223,11 +223,11 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Fees are payable in advance. Except where required by law or expressly stated in the Subscription, Billing, Refund and Cancellation Policy, fees are non-refundable and BloomAR does not provide credits or proration for partial periods, unused seats, or periods in which Customer did not use the Service. Cancelling a subscription stops future renewals; it does not by itself entitle Customer to a refund of amounts already paid.',
+        text: 'Fees are payable in advance. Except where required by law or expressly stated in the Subscription, Billing, Refund and Cancellation Policy, fees are non-refundable and BloomRCM does not provide credits or proration for partial periods, unused seats, or periods in which Customer did not use the Service. Cancelling a subscription stops future renewals; it does not by itself entitle Customer to a refund of amounts already paid.',
       },
       {
         type: 'p',
-        text: 'Where BloomAR determines in good faith that a billing error occurred (for example a duplicate charge or a charge after a valid cancellation), BloomAR will correct it by refund or credit. Billing questions must be raised within 60 days of the invoice date so that records can be reconciled.',
+        text: 'Where BloomRCM determines in good faith that a billing error occurred (for example a duplicate charge or a charge after a valid cancellation), BloomRCM will correct it by refund or credit. Billing questions must be raised within 60 days of the invoice date so that records can be reconciled.',
       },
       {
         type: 'h2',
@@ -235,11 +235,11 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: `If a renewal payment fails, the subscription enters a past-due state and a grace period of ${BILLING_IMPLEMENTATION.gracePeriodDays} days begins. During the grace period the workspace remains fully usable and BloomAR will notify Customer\u2019s billing contact and Organization Administrators so the payment method can be corrected. If payment is not completed by the end of the grace period, the workspace becomes read-only: Customer and its Authorized Users can view and export existing records but cannot create or modify records until payment is resolved.`,
+        text: `If a renewal payment fails, the subscription enters a past-due state and a grace period of ${BILLING_IMPLEMENTATION.gracePeriodDays} days begins. During the grace period the workspace remains fully usable and BloomRCM will notify Customer\u2019s billing contact and Organization Administrators so the payment method can be corrected. If payment is not completed by the end of the grace period, the workspace becomes read-only: Customer and its Authorized Users can view and export existing records but cannot create or modify records until payment is resolved.`,
       },
       {
         type: 'p',
-        text: 'BloomAR does not delete Customer Data because a payment failed. Data retention after a lapse of payment is described in the Subscription, Billing, Refund and Cancellation Policy and the Privacy Policy.',
+        text: 'BloomRCM does not delete Customer Data because a payment failed. Data retention after a lapse of payment is described in the Subscription, Billing, Refund and Cancellation Policy and the Privacy Policy.',
       },
       {
         type: 'h2',
@@ -247,7 +247,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR may change subscription prices. For self-serve subscriptions, BloomAR will give at least 30 days\u2019 advance notice by email to Organization Administrators before a price change takes effect for an existing subscription, and the new price will apply from the next renewal after the notice period. If Customer does not wish to continue at the new price, Customer may cancel before the change takes effect and will not be charged the new price.',
+        text: 'BloomRCM may change subscription prices. For self-serve subscriptions, BloomRCM will give at least 30 days\u2019 advance notice by email to Organization Administrators before a price change takes effect for an existing subscription, and the new price will apply from the next renewal after the notice period. If Customer does not wish to continue at the new price, Customer may cancel before the change takes effect and will not be charged the new price.',
       },
       {
         type: 'p',
@@ -277,14 +277,14 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
           'Copy, frame, mirror, scrape, or resell the Service, or make it available to third parties other than Authorized Users, including as a service bureau for entities that are not Customers.',
           'Circumvent seat, practice, or claim-volume limits, usage metering, or rate limits, or use the API in a manner that materially degrades the Service for others.',
           'Introduce malware, or upload content that is unlawful, defamatory, infringing, or that contains executable code intended to disrupt the Service.',
-          'Use the Service to build a competing product, or to benchmark or publish performance results without BloomAR\u2019s prior written consent.',
+          'Use the Service to build a competing product, or to benchmark or publish performance results without BloomRCM\u2019s prior written consent.',
           'Remove, obscure, or alter proprietary notices, or misrepresent the Service as Customer\u2019s own product.',
-          'Use the Service in a way that would subject BloomAR to a sanctions regime, export-control restriction, or criminal liability, or on behalf of a person or entity subject to U.S. sanctions.',
+          'Use the Service in a way that would subject BloomRCM to a sanctions regime, export-control restriction, or criminal liability, or on behalf of a person or entity subject to U.S. sanctions.',
         ],
       },
       {
         type: 'p',
-        text: 'BloomAR may investigate suspected violations and may suspend or terminate access as described in Section 19. Where BloomAR reasonably believes conduct may be unlawful, it may report it to appropriate authorities and cooperate with them.',
+        text: 'BloomRCM may investigate suspected violations and may suspend or terminate access as described in Section 19. Where BloomRCM reasonably believes conduct may be unlawful, it may report it to appropriate authorities and cooperate with them.',
       },
       {
         type: 'h2',
@@ -292,11 +292,11 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'As between the parties, Customer owns all right, title, and interest in and to Customer Data, including all PHI contained in it. BloomAR claims no ownership of Customer Data and will not use Customer Data for its own purposes except as permitted by these Terms, the Privacy Policy, and (where applicable) the Business Associate Agreement.',
+        text: 'As between the parties, Customer owns all right, title, and interest in and to Customer Data, including all PHI contained in it. BloomRCM claims no ownership of Customer Data and will not use Customer Data for its own purposes except as permitted by these Terms, the Privacy Policy, and (where applicable) the Business Associate Agreement.',
       },
       {
         type: 'p',
-        text: 'Customer grants BloomAR a limited, non-exclusive licence to host, store, transmit, process, display, back up, and create technical copies of Customer Data solely to provide, secure, maintain, and support the Service, to prevent fraud and abuse, and to comply with law. This licence ends when Customer Data is deleted, except for residual copies in backups and records BloomAR must retain by law.',
+        text: 'Customer grants BloomRCM a limited, non-exclusive licence to host, store, transmit, process, display, back up, and create technical copies of Customer Data solely to provide, secure, maintain, and support the Service, to prevent fraud and abuse, and to comply with law. This licence ends when Customer Data is deleted, except for residual copies in backups and records BloomRCM must retain by law.',
       },
       {
         type: 'p',
@@ -304,7 +304,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR may create and use aggregated or de-identified information derived from usage of the Service (for example feature-usage statistics and error rates) to operate, secure, and improve the Service, provided that such information does not identify Customer or any individual and is not derived from PHI in a way that would permit re-identification. BloomAR will not re-identify de-identified data and will contractually bind any recipient accordingly, consistent with 45 C.F.R. § 164.514.',
+        text: 'BloomRCM may create and use aggregated or de-identified information derived from usage of the Service (for example feature-usage statistics and error rates) to operate, secure, and improve the Service, provided that such information does not identify Customer or any individual and is not derived from PHI in a way that would permit re-identification. BloomRCM will not re-identify de-identified data and will contractually bind any recipient accordingly, consistent with 45 C.F.R. § 164.514.',
       },
       {
         type: 'h2',
@@ -312,15 +312,15 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'The Service, including its software, source code, user interface, design system, documentation, workflows, and all improvements to them, is and remains the exclusive property of BloomAR and its licensors, protected by copyright, trade secret, and other laws. BloomAR reserves all rights not expressly granted in these Terms.',
+        text: 'The Service, including its software, source code, user interface, design system, documentation, workflows, and all improvements to them, is and remains the exclusive property of BloomRCM and its licensors, protected by copyright, trade secret, and other laws. BloomRCM reserves all rights not expressly granted in these Terms.',
       },
       {
         type: 'p',
-        text: 'The BloomAR and BloomAR Manager names, logos, and product marks are trademarks of BloomAR. Customer receives no right to use them except to identify BloomAR as Customer\u2019s service provider with BloomAR\u2019s prior written consent, or as required by law.',
+        text: 'The BloomRCM and BloomAR Manager names, logos, and product marks are trademarks of BloomRCM. Customer receives no right to use them except to identify BloomRCM as Customer\u2019s service provider with BloomRCM\u2019s prior written consent, or as required by law.',
       },
       {
         type: 'p',
-        text: 'If Customer provides feedback, suggestions, or feature requests, BloomAR may use them without restriction or obligation, provided BloomAR does not disclose Customer as the source without permission. Third-party code sets and reference data embedded in the Service (including ICD-10-CM, CPT, and HCPCS-derived reference material and CARC/RARC code descriptions) remain subject to their own terms and, where applicable, third-party licensing; Customer\u2019s use of them through the Service is limited to the internal purposes of the Service.',
+        text: 'If Customer provides feedback, suggestions, or feature requests, BloomRCM may use them without restriction or obligation, provided BloomRCM does not disclose Customer as the source without permission. Third-party code sets and reference data embedded in the Service (including ICD-10-CM, CPT, and HCPCS-derived reference material and CARC/RARC code descriptions) remain subject to their own terms and, where applicable, third-party licensing; Customer\u2019s use of them through the Service is limited to the internal purposes of the Service.',
       },
       {
         type: 'h2',
@@ -344,14 +344,14 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR will maintain a security program with administrative, technical, and physical safeguards appropriate to the sensitivity of Customer Data, designed to protect its confidentiality, integrity, and availability. The technical controls implemented in the Service, and the controls that depend on Customer or its hosting and infrastructure providers, are described factually in the Privacy Policy and the Data Processing Agreement. BloomAR will not describe itself as "HIPAA compliant," "HIPAA certified," or "SOC 2 certified" unless and until it holds the specific attestation or certification named.',
+        text: 'BloomRCM will maintain a security program with administrative, technical, and physical safeguards appropriate to the sensitivity of Customer Data, designed to protect its confidentiality, integrity, and availability. The technical controls implemented in the Service, and the controls that depend on Customer or its hosting and infrastructure providers, are described factually in the Privacy Policy and the Data Processing Agreement. BloomRCM will not describe itself as "HIPAA compliant," "HIPAA certified," or "SOC 2 certified" unless and until it holds the specific attestation or certification named.',
       },
       {
         type: 'callout',
         tone: 'warn',
         title: 'No certification is claimed by this agreement',
         text:
-          'HIPAA does not provide a general government certification for software products, and the existence of these Terms, a Data Processing Agreement, or a Business Associate Agreement is not evidence that BloomAR has completed a HIPAA security risk analysis, achieved compliance, or obtained any third-party audit. BloomAR\u2019s current certifications and audit reports, if any, are stated only where expressly listed on the public website.',
+          'HIPAA does not provide a general government certification for software products, and the existence of these Terms, a Data Processing Agreement, or a Business Associate Agreement is not evidence that BloomRCM has completed a HIPAA security risk analysis, achieved compliance, or obtained any third-party audit. BloomRCM\u2019s current certifications and audit reports, if any, are stated only where expressly listed on the public website.',
       },
       {
         type: 'p',
@@ -359,7 +359,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR will notify Customer of a confirmed security incident or breach of unsecured PHI without unreasonable delay and in accordance with the notification provisions of the Business Associate Agreement and applicable law. Notification will describe what is known at the time and will be supplemented as the investigation progresses.',
+        text: 'BloomRCM will notify Customer of a confirmed security incident or breach of unsecured PHI without unreasonable delay and in accordance with the notification provisions of the Business Associate Agreement and applicable law. Notification will describe what is known at the time and will be supplemented as the investigation progresses.',
       },
       {
         type: 'h2',
@@ -373,16 +373,16 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
         type: 'ul',
         items: [
           'Determining whether the data it submits is PHI and whether a Business Associate Agreement is required before submission.',
-          'Executing a Business Associate Agreement with BloomAR before submitting PHI. Where no BAA has been executed, Customer must not submit PHI, and BloomAR is not acting as a business associate with respect to that data.',
+          'Executing a Business Associate Agreement with BloomRCM before submitting PHI. Where no BAA has been executed, Customer must not submit PHI, and BloomRCM is not acting as a business associate with respect to that data.',
           'Ensuring its notices of privacy practices, patient authorizations, and business associate arrangements with its own clients and subcontractors are accurate and current.',
           'Using the Service consistently with the HIPAA Privacy Rule\u2019s minimum-necessary standard, and not submitting more PHI than the workflow requires (for example, avoid free-text fields containing unnecessary clinical detail).',
-          'Maintaining its own breach notification obligations to individuals, HHS, and the media, and notifying BloomAR promptly of any suspected incident affecting data it submitted.',
+          'Maintaining its own breach notification obligations to individuals, HHS, and the media, and notifying BloomRCM promptly of any suspected incident affecting data it submitted.',
           'Complying with payer requirements, coding rules, and state licensing and billing rules applicable to its business.',
         ],
       },
       {
         type: 'p',
-        text: 'Where BloomAR creates, receives, maintains, or transmits PHI on Customer\u2019s behalf, BloomAR acts as a business associate and the parties\u2019 respective obligations are set out in the Business Associate Agreement, which is incorporated into these Terms when executed. If the BAA and these Terms conflict regarding PHI, the BAA controls. The Data Processing Agreement governs personal data that is not PHI.',
+        text: 'Where BloomRCM creates, receives, maintains, or transmits PHI on Customer\u2019s behalf, BloomRCM acts as a business associate and the parties\u2019 respective obligations are set out in the Business Associate Agreement, which is incorporated into these Terms when executed. If the BAA and these Terms conflict regarding PHI, the BAA controls. The Data Processing Agreement governs personal data that is not PHI.',
       },
       {
         type: 'h2',
@@ -390,11 +390,11 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'The Service relies on third-party providers for hosting, database, email delivery, and payment processing, and may interoperate with Customer-configured features such as custom domains. Those providers are described in the Privacy Policy and the Data Processing Agreement. BloomAR is responsible for its own selection and oversight of subprocessors, but is not responsible for the acts, omissions, availability, or terms of third-party services that Customer chooses to use independently, or for third-party services that Customer integrates with outside the Service.',
+        text: 'The Service relies on third-party providers for hosting, database, email delivery, and payment processing, and may interoperate with Customer-configured features such as custom domains. Those providers are described in the Privacy Policy and the Data Processing Agreement. BloomRCM is responsible for its own selection and oversight of subprocessors, but is not responsible for the acts, omissions, availability, or terms of third-party services that Customer chooses to use independently, or for third-party services that Customer integrates with outside the Service.',
       },
       {
         type: 'p',
-        text: 'If Customer enables a custom domain, Customer is responsible for owning and controlling that domain and for the DNS and hosting configuration on its side. BloomAR does not warrant that a domain will be issued a certificate or become reachable, and the Service will report configuration status honestly rather than assume success.',
+        text: 'If Customer enables a custom domain, Customer is responsible for owning and controlling that domain and for the DNS and hosting configuration on its side. BloomRCM does not warrant that a domain will be issued a certificate or become reachable, and the Service will report configuration status honestly rather than assume success.',
       },
       {
         type: 'h2',
@@ -402,11 +402,11 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR will use commercially reasonable efforts to make the Service available, and may perform scheduled maintenance, emergency maintenance, and deploy updates. BloomAR does not promise uninterrupted or error-free operation, and does not warrant any specific uptime percentage, recovery time objective, or service credit unless a separate written service-level agreement signed by BloomAR says so. No service-level commitment is created by marketing material, a status page, or these Terms.',
+        text: 'BloomRCM will use commercially reasonable efforts to make the Service available, and may perform scheduled maintenance, emergency maintenance, and deploy updates. BloomRCM does not promise uninterrupted or error-free operation, and does not warrant any specific uptime percentage, recovery time objective, or service credit unless a separate written service-level agreement signed by BloomRCM says so. No service-level commitment is created by marketing material, a status page, or these Terms.',
       },
       {
         type: 'p',
-        text: 'BloomAR may modify, add, or remove features. BloomAR will not materially reduce the core functionality of a paid plan during a paid term without notice, but may change non-essential features, user interface, and integrations at any time. Features described as planned or on a roadmap are not commitments and may never be released.',
+        text: 'BloomRCM may modify, add, or remove features. BloomRCM will not materially reduce the core functionality of a paid plan during a paid term without notice, but may change non-essential features, user interface, and integrations at any time. Features described as planned or on a roadmap are not commitments and may never be released.',
       },
       {
         type: 'h2',
@@ -417,18 +417,18 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
         type: 'p',
         text: 'Customer may cancel its subscription at any time from Billing settings, or by contacting [[SUPPORT_EMAIL]]. Cancellation takes effect at the end of the current billing period, and access continues until then, except where a shorter period is required by law or where Customer asks us to close the account and delete its data under Section 20.',
       },
-      { type: 'h3', text: 'Termination or suspension by BloomAR' },
+      { type: 'h3', text: 'Termination or suspension by BloomRCM' },
       {
         type: 'p',
-        text: 'BloomAR may suspend or terminate access immediately, in whole or in part, if: (a) Customer materially breaches these Terms, the Business Associate Agreement, or the Data Processing Agreement and does not cure within 10 days of notice, except that no cure period applies to a breach that creates an immediate risk to the security or integrity of the Service or to other customers\u2019 data; (b) Customer fails to pay undisputed fees and remains in default after the grace period described in Section 9; (c) BloomAR is required to do so by law, court order, or a regulator; (d) continuing to provide the Service would create a material legal, sanctions, or security risk; or (e) Customer becomes insolvent or ceases operations.',
+        text: 'BloomRCM may suspend or terminate access immediately, in whole or in part, if: (a) Customer materially breaches these Terms, the Business Associate Agreement, or the Data Processing Agreement and does not cure within 10 days of notice, except that no cure period applies to a breach that creates an immediate risk to the security or integrity of the Service or to other customers\u2019 data; (b) Customer fails to pay undisputed fees and remains in default after the grace period described in Section 9; (c) BloomRCM is required to do so by law, court order, or a regulator; (d) continuing to provide the Service would create a material legal, sanctions, or security risk; or (e) Customer becomes insolvent or ceases operations.',
       },
       {
         type: 'p',
-        text: 'BloomAR may also suspend access on a temporary basis to address a security emergency, to prevent ongoing abuse, or to comply with a lawful request, and will restore access as soon as the reason for suspension is resolved. Where reasonably practicable, BloomAR will give notice before a suspension and will limit the suspension to the affected part of the Service.',
+        text: 'BloomRCM may also suspend access on a temporary basis to address a security emergency, to prevent ongoing abuse, or to comply with a lawful request, and will restore access as soon as the reason for suspension is resolved. Where reasonably practicable, BloomRCM will give notice before a suspension and will limit the suspension to the affected part of the Service.',
       },
       {
         type: 'p',
-        text: 'BloomAR may terminate a free trial at any time without liability, and may close an account that remains unpaid and inactive for an extended period after notice.',
+        text: 'BloomRCM may terminate a free trial at any time without liability, and may close an account that remains unpaid and inactive for an extended period after notice.',
       },
       { type: 'h3', text: 'Effect of termination' },
       {
@@ -445,14 +445,14 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'After the Export Window, BloomAR may delete Customer Data from live systems. Backup copies are retained only for the period described in the Privacy Policy and are deleted on the normal backup rotation. BloomAR may retain Customer Data for longer where required by law, for audit and financial records, to resolve a dispute, or to enforce these Terms, and will retain PHI only as permitted by the Business Associate Agreement.',
+        text: 'After the Export Window, BloomRCM may delete Customer Data from live systems. Backup copies are retained only for the period described in the Privacy Policy and are deleted on the normal backup rotation. BloomRCM may retain Customer Data for longer where required by law, for audit and financial records, to resolve a dispute, or to enforce these Terms, and will retain PHI only as permitted by the Business Associate Agreement.',
       },
       {
         type: 'callout',
         tone: 'warn',
         title: 'Export before you cancel',
         text:
-          'BloomAR does not currently run an automated archival-purge job. That does not make deletion automatic or guaranteed; it means that deletion requests are executed through documented operator procedure. Customer is responsible for exporting records it needs to retain, including any records it must keep under 45 C.F.R. § 164.530(j) or applicable state medical-record and billing-record retention rules, before the Export Window closes.',
+          'BloomRCM does not currently run an automated archival-purge job. That does not make deletion automatic or guaranteed; it means that deletion requests are executed through documented operator procedure. Customer is responsible for exporting records it needs to retain, including any records it must keep under 45 C.F.R. § 164.530(j) or applicable state medical-record and billing-record retention rules, before the Export Window closes.',
       },
       {
         type: 'h2',
@@ -460,7 +460,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR warrants that: (a) it will provide the Service in a professional and workmanlike manner consistent with generally accepted industry standards; (b) the Service will materially perform the functions described in its public documentation; and (c) BloomAR will not knowingly introduce into the Service any malicious code. Customer\u2019s exclusive remedy for breach of these warranties is re-performance of the deficient Service or, if BloomAR cannot correct it within a reasonable time, termination of the affected subscription and a refund of prepaid fees for the unused portion.',
+        text: 'BloomRCM warrants that: (a) it will provide the Service in a professional and workmanlike manner consistent with generally accepted industry standards; (b) the Service will materially perform the functions described in its public documentation; and (c) BloomRCM will not knowingly introduce into the Service any malicious code. Customer\u2019s exclusive remedy for breach of these warranties is re-performance of the deficient Service or, if BloomRCM cannot correct it within a reasonable time, termination of the affected subscription and a refund of prepaid fees for the unused portion.',
       },
       {
         type: 'callout',
@@ -497,15 +497,15 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
         type: 'h2',
         text: 'Indemnification',
       },
-      { type: 'h3', text: 'Indemnification by BloomAR' },
+      { type: 'h3', text: 'Indemnification by BloomRCM' },
       {
         type: 'p',
-        text: 'BloomAR will defend Customer against any third-party claim alleging that the Service, as provided by BloomAR and used in accordance with these Terms, infringes or misappropriates that third party\u2019s United States patent, copyright, or trade secret, and will pay damages and costs finally awarded or agreed in settlement. If such a claim is made or likely, BloomAR may, at its option, procure the right for Customer to continue using the Service, modify the Service so it is non-infringing while materially retaining functionality, or terminate the affected subscription and refund prepaid fees for the unused portion. This Section does not apply to claims arising from Customer Data, Customer\u2019s modifications, use outside the documented scope, or combination with products not supplied by BloomAR.',
+        text: 'BloomRCM will defend Customer against any third-party claim alleging that the Service, as provided by BloomRCM and used in accordance with these Terms, infringes or misappropriates that third party\u2019s United States patent, copyright, or trade secret, and will pay damages and costs finally awarded or agreed in settlement. If such a claim is made or likely, BloomRCM may, at its option, procure the right for Customer to continue using the Service, modify the Service so it is non-infringing while materially retaining functionality, or terminate the affected subscription and refund prepaid fees for the unused portion. This Section does not apply to claims arising from Customer Data, Customer\u2019s modifications, use outside the documented scope, or combination with products not supplied by BloomRCM.',
       },
       { type: 'h3', text: 'Indemnification by Customer' },
       {
         type: 'p',
-        text: 'Customer will defend BloomAR against any third-party claim arising out of or relating to: (a) Customer Data, including claims by patients, payers, providers, or Customer\u2019s own clients concerning the content, accuracy, use, or disclosure of that data; (b) Customer\u2019s billing, coding, collection, or clinical practices, or its submissions to any payer; (c) Customer\u2019s failure to obtain required authorizations, consents, or a Business Associate Agreement before submitting PHI; (d) Customer\u2019s violation of HIPAA or other applicable law; or (e) Customer\u2019s breach of Section 11 (Acceptable use); and will pay damages and costs finally awarded or agreed in settlement.',
+        text: 'Customer will defend BloomRCM against any third-party claim arising out of or relating to: (a) Customer Data, including claims by patients, payers, providers, or Customer\u2019s own clients concerning the content, accuracy, use, or disclosure of that data; (b) Customer\u2019s billing, coding, collection, or clinical practices, or its submissions to any payer; (c) Customer\u2019s failure to obtain required authorizations, consents, or a Business Associate Agreement before submitting PHI; (d) Customer\u2019s violation of HIPAA or other applicable law; or (e) Customer\u2019s breach of Section 11 (Acceptable use); and will pay damages and costs finally awarded or agreed in settlement.',
       },
       { type: 'h3', text: 'Indemnification procedure' },
       {
@@ -545,7 +545,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Nothing in this Section prevents either party from seeking injunctive relief in any court of competent jurisdiction, or prevents BloomAR from seeking to enforce a judgment in any jurisdiction where Customer has assets.',
+        text: 'Nothing in this Section prevents either party from seeking injunctive relief in any court of competent jurisdiction, or prevents BloomRCM from seeking to enforce a judgment in any jurisdiction where Customer has assets.',
       },
       {
         type: 'h2',
@@ -574,7 +574,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       { type: 'h3', text: 'Notices' },
       {
         type: 'p',
-        text: `Legal notices to BloomAR must be sent in writing to ${entityFullName(
+        text: `Legal notices to BloomRCM must be sent in writing to ${entityFullName(
           E
         )}, Attn: Legal, [[LEGAL_ADDRESS_LINE1]], [[LEGAL_CITY]], [[LEGAL_REGION]] [[LEGAL_POSTAL_CODE]], United States, with a copy by email to [[LEGAL_NOTICES_EMAIL]]. Notices to Customer may be sent to the email address of the Organization Administrator on record, or posted in the Service, and are effective when sent. Operational notices (maintenance, security, billing) may be sent by email to the Customer\u2019s administrative contacts.`,
       },
@@ -601,7 +601,7 @@ export function termsDocument(plans?: PlanCatalogItem[]): LegalDocument {
       { type: 'h3', text: 'Changes to these Terms' },
       {
         type: 'p',
-        text: 'BloomAR may update these Terms to reflect changes in the Service, the law, or its practices. Material changes will be announced by email to Organization Administrators and by updating the "Last updated" date at the top of this document, with at least 30 days\u2019 notice where the change materially adversely affects Customer. Changes apply from the effective date stated in the notice; if Customer does not agree, Customer may cancel before the change takes effect. Changes required by law may take effect immediately.',
+        text: 'BloomRCM may update these Terms to reflect changes in the Service, the law, or its practices. Material changes will be announced by email to Organization Administrators and by updating the "Last updated" date at the top of this document, with at least 30 days\u2019 notice where the change materially adversely affects Customer. Changes apply from the effective date stated in the notice; if Customer does not agree, Customer may cancel before the change takes effect. Changes required by law may take effect immediately.',
       },
       { type: 'h3', text: 'Language and interpretation' },
       {

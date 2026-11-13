@@ -1,6 +1,8 @@
 # BloomAR Manager — Legal & Stripe Readiness Compliance Audit
 
 **Date:** 13 November 2026
+**Correction (13 November 2026):** The owner has confirmed the operating business is **BloomRCM** ([bloomrcm.vercel.app](https://bloomrcm.vercel.app)) and that its business/support email is **bloomrcm@gmail.com**. Those facts are now the built-in defaults (`LEGAL_ENTITY_NAME=BloomRCM`, all `LEGAL_*_EMAIL=bloomrcm@gmail.com`, footer/contact/legal issuer blocks), so the agreements now read "BloomRCM d/b/a BloomAR Manager". A different name seen in an earlier preview was a throwaway test value in a local preview server only — it was never committed to this repository. BloomRCM's postal address, state of organization, governing-law state, venue, and phone remain unsupplied and still render as placeholders. In Stripe, the business name/descriptor should now match **BloomRCM / BloomAR Manager**.
+
 **Scope:** `/legal/{terms,privacy,subscription,cookies,dpa,baa}`, `/legal`, checkout, billing settings, footer, and the code paths those documents make claims about.
 **Method:** Every statement in the legal documents was checked against the actual implementation in this repository. Where a document makes a claim about product behavior (cookies set, encryption, cancellation, trial conversion, data retention), the claim is asserted by an automated test in `tests/legal-compliance.test.mjs` that reads the relevant source file. Nothing below is marked compliant merely because text exists.
 
@@ -53,14 +55,14 @@ The documents contain **no invented business facts**. Unsupplied values render a
 
 | Variable | Used for | Blocks |
 |---|---|---|
-| `LEGAL_ENTITY_NAME` | Contracting party in every agreement | **Publication** |
+| `LEGAL_ENTITY_NAME` | Contracting party in every agreement | ✅ Supplied: `BloomRCM` (default in code; still set it in hosting env) |
 | `LEGAL_ADDRESS_LINE1/2`, `LEGAL_CITY`, `LEGAL_REGION`, `LEGAL_POSTAL_CODE` | Notices address, principal place of business | **Publication** |
 | `LEGAL_INCORPORATION_STATE` | Entity description in Terms §2 | Publication |
-| `LEGAL_SUPPORT_EMAIL` | Cancellation-by-email, refunds, export requests | **Stripe support requirement** |
+| `LEGAL_SUPPORT_EMAIL` | Cancellation-by-email, refunds, export requests | ✅ Supplied: `bloomrcm@gmail.com` |
 | `LEGAL_SUPPORT_PHONE` | Alternative cancellation channel | Publication |
-| `LEGAL_PRIVACY_EMAIL` | Privacy requests, complaints | Compliance |
-| `LEGAL_SECURITY_EMAIL` | Vulnerability/incident reporting | Compliance |
-| `LEGAL_NOTICES_EMAIL` | Legal notices, BAA execution requests | Contract formation |
+| `LEGAL_PRIVACY_EMAIL` | Privacy requests, complaints | ✅ Supplied: `bloomrcm@gmail.com` |
+| `LEGAL_SECURITY_EMAIL` | Vulnerability/incident reporting | ✅ Supplied: `bloomrcm@gmail.com` |
+| `LEGAL_NOTICES_EMAIL` | Legal notices, BAA execution requests | ✅ Supplied: `bloomrcm@gmail.com` |
 | `LEGAL_GOVERNING_STATE` | Governing law in Terms, DPA, BAA | **Enforceability** |
 | `LEGAL_VENUE` | Arbitration seat / exclusive venue | Enforceability |
 | `EFFECTIVE_DATE`, `LAST_UPDATED_DATE` | Document metadata | Legal hygiene |
@@ -104,9 +106,9 @@ Also required, and not settable by code:
 | Privacy Policy public | ✅ | `/legal/privacy` 200 unauthenticated |
 | Subscription/cancellation policy public | ✅ | `/legal/subscription` 200 unauthenticated |
 | Refund information public | ✅ | `/legal/subscription` §8 |
-| Contact information and support channel | ✅ Structure, ⚠️ values | `/contact`, `/legal` issuer block; needs `LEGAL_SUPPORT_EMAIL` |
+| Contact information and support channel | ✅ | `bloomrcm@gmail.com` in footer, `/contact`, `/legal` issuer block and all six agreements; BloomRCM website linked |
 | Legal restrictions disclosed | ✅ | Terms §11, refund/eligibility terms |
-| Business name/description consistent with Stripe Dashboard | ⚠️ **Operator action** | Set `LEGAL_DBA`/`LEGAL_ENTITY_NAME` to match the Dashboard legal entity, and matching statement descriptor |
+| Business name/description consistent with Stripe Dashboard | ⚠️ **Operator action** | Business is now **BloomRCM** / product **BloomAR Manager** in code; set the Stripe Dashboard legal business name and statement descriptor to match |
 | Terms of Service URL in Stripe Dashboard → Public details | ⚠️ **Operator action** | Required for the consent checkbox to work at all; checkout now returns a precise instruction if missing |
 | Privacy Policy URL in Stripe Dashboard | ⚠️ **Operator action** | `/legal/privacy` |
 | Refund policy URL in Stripe Dashboard | ⚠️ **Operator action** | `/legal/subscription` |
@@ -168,9 +170,10 @@ These are **not** engineering tasks. Each is flagged in-product with a `{{COUNSE
 
 **Must be done before the legal pages are published:**
 
-- [ ] Set every `LEGAL_*` variable in §3 in the hosting environment and redeploy.
+- [ ] Set every still-missing `LEGAL_*` variable in §3 (address, incorporation state, governing state, venue) in the hosting environment and redeploy. Business name and all contact emails are already BloomRCM / bloomrcm@gmail.com by default.
 - [ ] Replace `EFFECTIVE_DATE` and `LAST_UPDATED_DATE` with real dates when publishing version 1.0.
-- [ ] Confirm the support email and phone are monitored (they are offered as cancellation channels).
+- [x] Support/business email supplied and to be monitored: bloomrcm@gmail.com (offered as a cancellation channel).
+- [ ] Confirm whether any support phone exists; if not, remove the phone-cancellation sentence.
 - [ ] Remove the phone-cancellation sentence if no phone support exists.
 
 **Must be done before the first live charge:**

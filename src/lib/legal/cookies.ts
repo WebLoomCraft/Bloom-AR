@@ -167,7 +167,7 @@ export function cookiesDocument(): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Customers who embed or link to their own content inside a BloomAR workspace, or who put their own tracking on pages they control, are responsible for their own cookie notices and consents. BloomAR does not permit third-party tracking scripts to be injected into the application, and we do not provide a facility for doing so.',
+        text: 'Customers who embed or link to their own content inside a BloomRCM workspace, or who put their own tracking on pages they control, are responsible for their own cookie notices and consents. BloomRCM does not permit third-party tracking scripts to be injected into the application, and we do not provide a facility for doing so.',
       },
       { type: 'h2', text: 'Changes to this policy' },
       {

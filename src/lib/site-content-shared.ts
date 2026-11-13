@@ -1,5 +1,5 @@
 export interface SiteContent {
-  brandName: string; tagline: string; supportEmail: string; supportPhone: string;
+  brandName: string; businessName: string; businessWebsite: string; tagline: string; supportEmail: string; supportPhone: string;
   announcementEnabled: boolean; announcementText: string; announcementLink: string;
   heroHeadline: string; heroSubtext: string; heroPrimaryCta: string; heroSecondaryCta: string;
   featuresHeading: string;
@@ -9,8 +9,8 @@ export interface SiteContent {
   footerText: string; seoTitle: string; seoDescription: string;
 }
 export const DEFAULT_SITE_CONTENT: SiteContent = {
-  brandName: 'BloomAR Manager', tagline: 'Medical billing & accounts-receivable workspace for practices and billing companies.',
-  supportEmail: '', supportPhone: '', announcementEnabled: false, announcementText: '', announcementLink: '',
+  brandName: 'BloomAR Manager', businessName: 'BloomRCM', businessWebsite: 'https://bloomrcm.vercel.app', tagline: 'Medical billing & accounts-receivable workspace for practices and billing companies.',
+  supportEmail: 'bloomrcm@gmail.com', supportPhone: '', announcementEnabled: false, announcementText: '', announcementLink: '',
   heroHeadline: 'Take Control of Your Medical Billing and Accounts Receivable.',
   heroSubtext: 'Manage your billing operations, monitor outstanding receivables, organize your workflows, and give your team a centralized workspace built around your practice.',
   heroPrimaryCta: 'Start Free Trial', heroSecondaryCta: 'Book a Demo', featuresHeading: 'Built for practices, physicians & billing companies',
@@ -22,7 +22,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
     { title: 'Authorizations & tasks', description: 'Prior auth, referrals, VOB, charge entry and payment posting workflows.' },
     { title: 'Team collaboration', description: 'Role-based access, chat, notifications, sign-offs and a complete audit trail.' },
   ],
-  aboutText: 'BloomAR Manager exists to give medical practices and billing companies one organized place to work accounts receivable: see what is outstanding, assign it, work it, review it, and measure it. Our philosophy is simple — preserve the workflows billing teams actually use, isolate each organization\'s data, and be honest about what is configured versus planned.',
+  aboutText: 'BloomAR Manager is the software product of BloomRCM. It gives medical practices and billing companies one organized place to work accounts receivable: see what is outstanding, assign it, work it, review it, and measure it. Our philosophy is simple — preserve the workflows billing teams actually use, isolate each organization\'s data, and be honest about what is configured versus planned.',
   roadmapText: 'Richer workflow automation, clearinghouse 835/837 tooling, and expanded reporting — released only when verified against the real backend.',
   faqs: [
     { question: 'How do I create an account?', answer: 'Use Create Account, verify your email, and your organization workspace and trial are created automatically.' },
@@ -38,8 +38,8 @@ export function mergeSiteContent(raw: Record<string, unknown> | null | undefined
   const d = DEFAULT_SITE_CONTENT; const r = raw as Partial<SiteContent>;
   return {
     ...d,
-    brandName: str(r.brandName, d.brandName), tagline: str(r.tagline, d.tagline),
-    supportEmail: typeof r.supportEmail === 'string' ? r.supportEmail : d.supportEmail,
+    brandName: str(r.brandName, d.brandName), businessName: str(r.businessName, d.businessName), businessWebsite: str(r.businessWebsite, d.businessWebsite), tagline: str(r.tagline, d.tagline),
+    supportEmail: str(r.supportEmail, d.supportEmail),
     supportPhone: typeof r.supportPhone === 'string' ? r.supportPhone : d.supportPhone,
     announcementEnabled: Boolean(r.announcementEnabled), announcementText: str(r.announcementText, ''), announcementLink: str(r.announcementLink, ''),
     heroHeadline: str(r.heroHeadline, d.heroHeadline), heroSubtext: str(r.heroSubtext, d.heroSubtext),

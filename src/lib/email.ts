@@ -41,7 +41,7 @@ export async function sendEmail(
   }
   try {
     const t = await getTransporter();
-    const from = process.env.SMTP_FROM || 'BloomAR Manager <noreply@bloomar.com>';
+    const from = process.env.SMTP_FROM || 'BloomRCM <bloomrcm@gmail.com>';
 
     const result = await t.sendMail({
       from,

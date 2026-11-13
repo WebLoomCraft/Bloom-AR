@@ -51,10 +51,10 @@ export default async function Page() {
               The documents below are complete, but {missing.length} business-identity{' '}
               {missing.length === 1 ? 'value has' : 'values have'} not been supplied and appear as
               highlighted placeholders: {missing.join(', ')}. Set the corresponding environment
-              variables (<code className="rounded bg-white/70 px-1">LEGAL_ENTITY_NAME</code>,{' '}
-              <code className="rounded bg-white/70 px-1">LEGAL_ADDRESS_LINE1</code>,{' '}
-              <code className="rounded bg-white/70 px-1">LEGAL_SUPPORT_EMAIL</code>, and so on) and
-              redeploy. This notice is visible only while placeholders remain.
+              variables (<code className="rounded bg-white/70 px-1">LEGAL_ADDRESS_LINE1</code>,{' '}
+              <code className="rounded bg-white/70 px-1">LEGAL_GOVERNING_STATE</code>,{' '}
+              <code className="rounded bg-white/70 px-1">LEGAL_VENUE</code>, and so on) and redeploy.
+              Business name (BloomRCM) and contact email (bloomrcm@gmail.com) are already supplied. This notice is visible only while placeholders remain.
             </p>
           </div>
         )}
@@ -140,6 +140,10 @@ export default async function Page() {
               {postalAddressOneLine()}
             </p>
             <dl className="mt-3 space-y-1.5 text-sm text-slate-600">
+              <div className="flex gap-2">
+                <dt className="font-semibold text-slate-700">Business:</dt>
+                <dd>{content.businessName} — <a href={content.businessWebsite} target="_blank" rel="noreferrer" className="text-blue-700 underline">bloomrcm.vercel.app</a></dd>
+              </div>
               <div className="flex gap-2">
                 <dt className="font-semibold text-slate-700">Support:</dt>
                 <dd>

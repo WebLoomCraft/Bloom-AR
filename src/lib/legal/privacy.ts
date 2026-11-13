@@ -9,12 +9,12 @@ export function privacyDocument(): LegalDocument {
     title: 'Privacy Policy',
     shortTitle: 'Privacy',
     summary:
-      'What BloomAR collects, why, how long it keeps it, who it shares it with, and what rights you have — including how PHI is handled under a BAA.',
+      'What BloomRCM collects, why, how long it keeps it, who it shares it with, and what rights you have — including how PHI is handled under a BAA.',
     effectiveDate: '[[EFFECTIVE_DATE]]',
     lastUpdated: '[[LAST_UPDATED_DATE]]',
     version: '1.0',
     appliesTo:
-      'Visitors to bloomar.com-style public pages, account holders, Authorized Users, and individuals whose information is submitted by a customer organization.',
+      'Visitors to the BloomAR Manager public pages, account holders, Authorized Users, and individuals whose information is submitted by a customer organization.',
     related: ['terms', 'cookies', 'dpa', 'baa', 'subscription'],
     blocks: [
       {
@@ -22,13 +22,13 @@ export function privacyDocument(): LegalDocument {
         tone: 'warn',
         title: 'Before publication: business information still required',
         text:
-          'Bracketed items must be supplied by the operating business before this policy is published. Privacy-related facts that BloomAR has not verified (such as specific retention periods for every record type and the final subprocessor list) are stated conservatively and flagged where they need confirmation.',
+          'Bracketed items must be supplied by the operating business before this policy is published. Privacy-related facts that BloomRCM has not verified (such as specific retention periods for every record type and the final subprocessor list) are stated conservatively and flagged where they need confirmation.',
       },
       {
         type: 'p',
         text: `${entityFullName(
           E
-        )} ("**BloomAR**," "**we**," "**us**") operates the BloomAR Manager platform, a subscription software service for medical billing and accounts-receivable management. This Privacy Policy explains what information we collect through our public website and the Service, how we use and share it, how long we keep it, and the choices and rights available to you.`,
+        )} ("**BloomRCM**," "**we**," "**us**") operates the BloomAR Manager platform, a subscription software service for medical billing and accounts-receivable management. This Privacy Policy explains what information we collect through our public website and the Service, how we use and share it, how long we keep it, and the choices and rights available to you.`,
       },
       {
         type: 'p',
@@ -44,15 +44,15 @@ export function privacyDocument(): LegalDocument {
         items: [
           {
             term: '1. Information we control as a business',
-            def: 'Information about you as a website visitor, prospect, account holder, or billing contact — your name, work email, organization, sign-in data, billing details, and how you use the Service. BloomAR decides why and how this information is processed. This policy governs it directly.',
+            def: 'Information about you as a website visitor, prospect, account holder, or billing contact — your name, work email, organization, sign-in data, billing details, and how you use the Service. BloomRCM decides why and how this information is processed. This policy governs it directly.',
           },
           {
             term: '2. Customer Data we process on behalf of a healthcare organization',
-            def: 'Data a customer organization and its Authorized Users put into the Service — claims, patient and subscriber identifiers, payer data, charges and payments, remittance files, notes, and uploaded documents. BloomAR processes this data as a service provider / business associate on the customer\u2019s instructions. The customer decides what is collected and why. If you are a patient, the healthcare organization that submitted your information is the party responsible for it, and you should direct requests to them.',
+            def: 'Data a customer organization and its Authorized Users put into the Service — claims, patient and subscriber identifiers, payer data, charges and payments, remittance files, notes, and uploaded documents. BloomRCM processes this data as a service provider / business associate on the customer\u2019s instructions. The customer decides what is collected and why. If you are a patient, the healthcare organization that submitted your information is the party responsible for it, and you should direct requests to them.',
           },
           {
             term: '3. PHI processed under a Business Associate Agreement',
-            def: 'Where Customer Data includes Protected Health Information, BloomAR processes it as a business associate under an executed HIPAA Business Associate Agreement, not as an ordinary consumer-data controller. PHI is not used for marketing, advertising, or analytics, and is never sold.',
+            def: 'Where Customer Data includes Protected Health Information, BloomRCM processes it as a business associate under an executed HIPAA Business Associate Agreement, not as an ordinary consumer-data controller. PHI is not used for marketing, advertising, or analytics, and is never sold.',
           },
         ],
       },
@@ -66,7 +66,7 @@ export function privacyDocument(): LegalDocument {
         items: [
           '**Account information:** first and last name, work email address, password (stored only as a one-way bcrypt hash — we never store the password itself), and account status.',
           '**Organization information:** organization or practice name, organization type, country, time zone, custom domain names you register, and workspace settings.',
-          '**Billing and subscription information:** plan, billing interval, subscription status, trial dates, invoice history, and the identifiers our payment processor returns to us. Full payment card numbers, CVCs, and expiry dates are collected and stored by Stripe, Inc., not by BloomAR.',
+          '**Billing and subscription information:** plan, billing interval, subscription status, trial dates, invoice history, and the identifiers our payment processor returns to us. Full payment card numbers, CVCs, and expiry dates are collected and stored by Stripe, Inc., not by BloomRCM.',
           '**Contact and lead information:** when you submit a demo, sales, or contact request, we collect your name, work email, organization, optional phone number, and the message you send, plus the request type.',
           '**Communications:** the content of support requests, security reports, and correspondence with us.',
           '**Authentication and security data:** multi-factor authentication enrollment state and encrypted authenticator secrets, hashed recovery codes, session records (including IP address and browser user-agent), and verification/reset tokens (stored hashed).',
@@ -90,7 +90,7 @@ export function privacyDocument(): LegalDocument {
         tone: 'warn',
         title: 'Do not submit unnecessary sensitive data',
         text:
-          'The Service does not require Social Security numbers, full dates of birth beyond what a payer workflow needs, full clinical records, or financial account numbers, and we ask customers not to put them in free-text fields. Where such information is submitted anyway, it is treated as Customer Data under the customer\u2019s agreement and, if it is PHI, under the Business Associate Agreement. BloomAR does not knowingly collect information from children under 16 (see Section 13).',
+          'The Service does not require Social Security numbers, full dates of birth beyond what a payer workflow needs, full clinical records, or financial account numbers, and we ask customers not to put them in free-text fields. Where such information is submitted anyway, it is treated as Customer Data under the customer\u2019s agreement and, if it is PHI, under the Business Associate Agreement. BloomRCM does not knowingly collect information from children under 16 (see Section 13).',
       },
       {
         type: 'h2',
@@ -208,7 +208,7 @@ export function privacyDocument(): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR is a United States company serving United States healthcare organizations. The following legal frameworks are relevant to how we handle information.',
+        text: 'BloomRCM is a United States company serving United States healthcare organizations. The following legal frameworks are relevant to how we handle information.',
       },
       { type: 'h3', text: 'HIPAA Privacy Rule (45 C.F.R. Part 160 and Subparts A and E of Part 164)' },
       {
@@ -222,7 +222,7 @@ export function privacyDocument(): LegalDocument {
       { type: 'h3', text: 'HIPAA Security Rule (45 C.F.R. Part 160 and Subpart C of Part 164)' },
       {
         type: 'p',
-        text: 'We maintain administrative, physical, and technical safeguards designed to protect ePHI, described in Section 10 and in the Data Processing Agreement. BloomAR does not claim a HIPAA certification or accreditation, because HIPAA does not issue one for software products. Our safeguards are supported by documented policies and controls, and customers remain responsible for their own security risk analysis and compliance program.',
+        text: 'We maintain administrative, physical, and technical safeguards designed to protect ePHI, described in Section 10 and in the Data Processing Agreement. BloomRCM does not claim a HIPAA certification or accreditation, because HIPAA does not issue one for software products. Our safeguards are supported by documented policies and controls, and customers remain responsible for their own security risk analysis and compliance program.',
       },
       { type: 'h3', text: 'HIPAA Breach Notification Rule (45 C.F.R. Part 164 Subpart D)' },
       {
@@ -232,12 +232,12 @@ export function privacyDocument(): LegalDocument {
       { type: 'h3', text: 'California Consumer Privacy Act and California Privacy Rights Act (as amended by the CPRA)' },
       {
         type: 'p',
-        text: 'The CCPA/CPRA applies to for-profit businesses meeting certain thresholds and gives California residents specific rights. Because BloomAR sells subscriptions to organizations, most information we hold about you is business-to-business contact information or information we process on behalf of a customer. Where the CCPA/CPRA applies, we act as a "business" for the information described in Section 1, role 1, and as a "service provider" for Customer Data described in role 2, in which case the customer is the "business" and you should direct requests to them. The rights and categories in Sections 7 and 8 apply to California residents where the law applies.',
+        text: 'The CCPA/CPRA applies to for-profit businesses meeting certain thresholds and gives California residents specific rights. Because BloomRCM sells subscriptions to organizations, most information we hold about you is business-to-business contact information or information we process on behalf of a customer. Where the CCPA/CPRA applies, we act as a "business" for the information described in Section 1, role 1, and as a "service provider" for Customer Data described in role 2, in which case the customer is the "business" and you should direct requests to them. The rights and categories in Sections 7 and 8 apply to California residents where the law applies.',
       },
       { type: 'h3', text: 'Other state comprehensive privacy laws' },
       {
         type: 'p',
-        text: 'Several states — including Colorado, Connecticut, Delaware, Indiana, Iowa, Kentucky, Maryland, Minnesota, Montana, Nebraska, New Hampshire, New Jersey, Oregon, Rhode Island, Tennessee, Texas, Utah, and Virginia, with more taking effect over time — have enacted comprehensive privacy laws. Where BloomAR is subject to one of these laws and acts as a controller, we honor the corresponding rights and our obligations as a processor for Customer Data. We do not use sensitive data for purposes requiring an opt-in beyond providing the Service. {{COUNSEL: confirm which state comprehensive privacy laws apply to BloomAR, whether any applicability threshold is met, and whether the business-to-business exemption changes the rights that must be offered}}',
+        text: 'Several states — including Colorado, Connecticut, Delaware, Indiana, Iowa, Kentucky, Maryland, Minnesota, Montana, Nebraska, New Hampshire, New Jersey, Oregon, Rhode Island, Tennessee, Texas, Utah, and Virginia, with more taking effect over time — have enacted comprehensive privacy laws. Where BloomRCM is subject to one of these laws and acts as a controller, we honor the corresponding rights and our obligations as a processor for Customer Data. We do not use sensitive data for purposes requiring an opt-in beyond providing the Service. {{COUNSEL: confirm which state comprehensive privacy laws apply to BloomRCM, whether any applicability threshold is met, and whether the business-to-business exemption changes the rights that must be offered}}',
       },
       { type: 'h3', text: 'State data breach notification laws' },
       {
@@ -247,7 +247,7 @@ export function privacyDocument(): LegalDocument {
       { type: 'h3', text: 'CAN-SPAM Act' },
       {
         type: 'p',
-        text: 'Commercial email we send complies with the CAN-SPAM Act: messages identify BloomAR as the sender, include a valid physical postal address, use accurate subject lines, and include a working one-click unsubscribe that we honor within 10 business days. Transactional and relationship messages (verification, password reset, invitations, invoices, security alerts, and service notices) are not commercial email and are not subject to unsubscribe requests, because they are necessary to operate the account.',
+        text: 'Commercial email we send complies with the CAN-SPAM Act: messages identify BloomRCM as the sender, include a valid physical postal address, use accurate subject lines, and include a working one-click unsubscribe that we honor within 10 business days. Transactional and relationship messages (verification, password reset, invitations, invoices, security alerts, and service notices) are not commercial email and are not subject to unsubscribe requests, because they are necessary to operate the account.',
       },
       { type: 'h3', text: 'Other laws we account for' },
       {
@@ -256,7 +256,7 @@ export function privacyDocument(): LegalDocument {
           '**Telephone Consumer Protection Act (TCPA):** we do not send marketing text messages. If we ever introduce SMS, we will obtain prior express written consent and honor opt-outs.',
           '**Anti-Kickback Statute, Stark Law, and False Claims Act:** these govern customer billing conduct, not our data practices, but they inform the acceptable-use restrictions in our Terms of Service.',
           '**42 C.F.R. Part 2:** if a customer is a federally assisted substance use disorder program, additional restrictions apply to that data. Customers must tell us before submitting Part 2 data so appropriate arrangements can be made; the Service alone does not implement Part 2 consent-management rules.',
-          '**State medical-record laws:** customers are responsible for retention periods imposed on medical records in their states. BloomAR\u2019s retention schedule in Section 9 is a platform default, not a substitute for those obligations.',
+          '**State medical-record laws:** customers are responsible for retention periods imposed on medical records in their states. BloomRCM\u2019s retention schedule in Section 9 is a platform default, not a substitute for those obligations.',
         ],
       },
       {
@@ -265,7 +265,7 @@ export function privacyDocument(): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Depending on where you live and whether BloomAR acts as a controller of your information, you may have the right to:',
+        text: 'Depending on where you live and whether BloomRCM acts as a controller of your information, you may have the right to:',
       },
       {
         type: 'ul',
@@ -382,7 +382,7 @@ export function privacyDocument(): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR provides the Service to customers in the United States, and our primary infrastructure and support operations are in the United States. Information we collect is processed and stored in the United States. If any subprocessor processes data outside the United States, we will list that location in the Data Processing Agreement and rely on an appropriate transfer mechanism.',
+        text: 'BloomRCM provides the Service to customers in the United States, and our primary infrastructure and support operations are in the United States. Information we collect is processed and stored in the United States. If any subprocessor processes data outside the United States, we will list that location in the Data Processing Agreement and rely on an appropriate transfer mechanism.',
       },
       {
         type: 'p',
@@ -456,7 +456,7 @@ export function privacyDocument(): LegalDocument {
         tone: 'info',
         title: 'Document status',
         text:
-          'Version 1.0. Effective and last-updated dates are placeholders until publication. This policy describes the Service as implemented at the time of writing and requires confirmation by counsel for the states in which BloomAR does business.',
+          'Version 1.0. Effective and last-updated dates are placeholders until publication. This policy describes the Service as implemented at the time of writing and requires confirmation by counsel for the states in which BloomRCM does business.',
       },
     ],
   };

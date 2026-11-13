@@ -2,14 +2,28 @@
  * Business identity used across every legal document, the site footer, and the
  * /legal index.
  *
- * NOTHING here is invented. Any value that has not been supplied by the
- * operating business renders as a clearly flagged placeholder such as
- * [[LEGAL_ENTITY_NAME]] instead of a plausible-looking fake detail.
+ * The operating business is **BloomRCM** (https://bloomrcm.vercel.app), which
+ * offers the BloomAR Manager software. Its public business/support email is
+ * bloomrcm@gmail.com. Those owner-supplied facts are the defaults below.
  *
- * Operators set these in the hosting environment (Vercel → Settings →
- * Environment Variables) and redeploy. They can also be supplied through the
- * `site_settings` document by a platform administrator for support contacts.
+ * Anything the owner has NOT supplied (postal address, state of organization,
+ * governing-law state, venue, phone) still renders as a clearly flagged
+ * placeholder such as [[LEGAL_ADDRESS_LINE1]] instead of an invented detail.
+ * In particular no "Inc."/"LLC" suffix, street address, or registration is
+ * claimed for BloomRCM, because none has been supplied.
+ *
+ * Operators can override any value in the hosting environment (Vercel →
+ * Settings → Environment Variables) and redeploy.
  */
+
+/** Operating business (owner-supplied). */
+export const BUSINESS_NAME = 'BloomRCM';
+/** Public business / support email for BloomRCM (owner-supplied). */
+export const BUSINESS_EMAIL = 'bloomrcm@gmail.com';
+/** BloomRCM's own website (separate from this BloomAR Manager app). */
+export const BUSINESS_WEBSITE = 'https://bloomrcm.vercel.app';
+/** Software product offered by BloomRCM. */
+export const PRODUCT_NAME = 'BloomAR Manager';
 
 const clean = (raw: string | undefined): string | null => {
   if (typeof raw !== 'string') return null;
@@ -56,8 +70,8 @@ export interface LegalEntity {
 const PLACEHOLDER = (name: string) => `[[${name}]]`;
 
 export const LEGAL_ENTITY: LegalEntity = {
-  legalName: env('LEGAL_ENTITY_NAME') ?? PLACEHOLDER('LEGAL_ENTITY_NAME'),
-  dba: env('LEGAL_DBA') ?? 'BloomAR Manager',
+  legalName: env('LEGAL_ENTITY_NAME') ?? BUSINESS_NAME,
+  dba: env('LEGAL_DBA') ?? PRODUCT_NAME,
   addressLine1: env('LEGAL_ADDRESS_LINE1') ?? PLACEHOLDER('LEGAL_ADDRESS_LINE1'),
   addressLine2: env('LEGAL_ADDRESS_LINE2'),
   city: env('LEGAL_CITY') ?? PLACEHOLDER('LEGAL_CITY'),
@@ -66,20 +80,20 @@ export const LEGAL_ENTITY: LegalEntity = {
   country: env('LEGAL_COUNTRY') ?? 'United States',
   incorporationState: env('LEGAL_INCORPORATION_STATE') ?? PLACEHOLDER('LEGAL_INCORPORATION_STATE'),
   supportEmail:
-    env('LEGAL_SUPPORT_EMAIL') ?? env('NEXT_PUBLIC_SUPPORT_EMAIL') ?? PLACEHOLDER('SUPPORT_EMAIL'),
+    env('LEGAL_SUPPORT_EMAIL') ?? env('NEXT_PUBLIC_SUPPORT_EMAIL') ?? BUSINESS_EMAIL,
   supportPhone:
     env('LEGAL_SUPPORT_PHONE') ?? env('NEXT_PUBLIC_SUPPORT_PHONE') ?? PLACEHOLDER('SUPPORT_PHONE'),
-  privacyEmail: env('LEGAL_PRIVACY_EMAIL') ?? PLACEHOLDER('PRIVACY_EMAIL'),
-  securityEmail: env('LEGAL_SECURITY_EMAIL') ?? PLACEHOLDER('SECURITY_EMAIL'),
-  legalEmail: env('LEGAL_NOTICES_EMAIL') ?? PLACEHOLDER('LEGAL_NOTICES_EMAIL'),
+  privacyEmail: env('LEGAL_PRIVACY_EMAIL') ?? BUSINESS_EMAIL,
+  securityEmail: env('LEGAL_SECURITY_EMAIL') ?? BUSINESS_EMAIL,
+  legalEmail: env('LEGAL_NOTICES_EMAIL') ?? BUSINESS_EMAIL,
   governingState: env('LEGAL_GOVERNING_STATE') ?? PLACEHOLDER('GOVERNING_STATE'),
   venue: env('LEGAL_VENUE') ?? PLACEHOLDER('VENUE_COUNTY'),
-  website: env('NEXT_PUBLIC_APP_URL') ?? 'bloomar.example',
+  website: env('LEGAL_BUSINESS_WEBSITE') ?? BUSINESS_WEBSITE,
 };
 
-/** Full legal name followed by the product name, e.g. "Acme, Inc. d/b/a BloomAR Manager". */
+/** Business name followed by the product name, e.g. "BloomRCM d/b/a BloomAR Manager". */
 export function entityFullName(entity: LegalEntity = LEGAL_ENTITY): string {
-  return `${entity.legalName} d/b/a ${entity.dba}`;
+  return entity.legalName === entity.dba ? entity.legalName : `${entity.legalName} d/b/a ${entity.dba}`;
 }
 
 /** Single-line postal address used in notices and the footer. */

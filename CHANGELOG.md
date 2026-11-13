@@ -8,6 +8,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 ## [Unreleased] — Legal compliance & Stripe readiness
 
+- **Business identity corrected:** operating business is now **BloomRCM** (bloomrcm.vercel.app) d/b/a BloomAR Manager everywhere (legal agreements, footer, contact, about, legal index, `.env.example`, email sender fallback). Business/support/privacy/security/legal email is **bloomrcm@gmail.com** on every surface. No other business name appears in the repository (an earlier preview-only test name was never committed). BloomRCM postal address, state of organization, governing law and venue remain placeholders until supplied.
+
 ### Added
 - **Six production legal agreements** as version-controlled documents in `src/lib/legal/` (Terms of Service, Privacy Policy, Subscription/Billing/Refund/Cancellation Policy, Cookie Policy, Data Processing Agreement, HIPAA Business Associate Agreement), replacing the CMS "template" paragraphs.
 - New `/legal` index with document cards, routing guidance by user need, issuer identity, and a conditional notice listing unresolved business details.
