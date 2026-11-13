@@ -41,6 +41,25 @@ export async function POST(req: NextRequest) {
   const orgId = obj.metadata?.organizationId || obj.subscription_details?.metadata?.organizationId;
   const planId = obj.metadata?.planId;
 
+  // Evidence of the customer's acceptance of the Terms. Stripe records this on the
+  // session because checkout sets consent_collection[terms_of_service]=required.
+  if (orgId && event.type === 'checkout.session.completed') {
+    const { createAuditLog } = await import('@/lib/audit');
+    await createAuditLog({
+      organizationId: orgId,
+      action: 'checkout_terms_accepted',
+      entityType: 'subscription',
+      entityId: obj.subscription || obj.id,
+      newValue: {
+        termsOfService: obj.consent?.terms_of_service || 'not_recorded',
+        amountTotal: obj.amount_total ?? null,
+        currency: obj.currency ? String(obj.currency).toUpperCase() : null,
+        billingInterval: obj.metadata?.billingInterval || null,
+        sessionId: obj.id,
+      },
+    });
+  }
+
   if (
     orgId &&
     [
@@ -146,6 +165,19 @@ export async function POST(req: NextRequest) {
       hostedInvoiceUrl: obj.hosted_invoice_url || null,
       failedAt: now,
     });
+  }
+
+  if (event.type === 'charge.refunded' || event.type === 'invoice.payment_refunded') {
+    const invoiceId = obj.invoice || obj.id;
+    const fullyRefunded =
+      event.type === 'charge.refunded' ? Boolean(obj.refunded) : true;
+    if (invoiceId) {
+      await db
+        .update(billingInvoices)
+        // status column is varchar(30); both values fit.
+        .set({ status: fullyRefunded ? 'refunded' : 'partially_refunded' })
+        .where(eq(billingInvoices.externalInvoiceId, invoiceId));
+    }
   }
 
   return NextResponse.json({ received: true });

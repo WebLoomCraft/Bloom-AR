@@ -34,7 +34,7 @@ Create products/prices in Stripe, put price IDs on plans (platform admin API), s
 - **Strict Operational Multi-Tenancy (`drizzle/0006_multi_tenant_isolation.sql`):** All 28 operational tables (`claims`, `practices`, `patients`, `payments`, `era_files`, `denial_analyses`, `billing_tasks`, `signoffs`, `authorizations`, `coding_requests`, `chat_channels`, `ocr_scans`, `e_signatures`, `notifications`, etc.) enforce `organization_id` scoping in Drizzle queries, cross-entity ownership validation, session-bound `active_organization_id` workspace switching (`POST /api/organizations/switch`), and PostgreSQL Row-Level Security (`ENABLE` + `FORCE ROW LEVEL SECURITY`).
 - **TOTP MFA (`user_mfa`):** RFC 6238 authenticator setup, recovery codes, and login challenge (`GET/POST/DELETE /api/account/mfa` + `POST /api/auth/login`).
 - **Zero Demo Data in Code:** Hardcoded demo users and synthetic claim generators are removed; `/api/seed` initializes only standard CARC/RARC denial codes and subscription plans. Optional test workspaces can be provisioned exclusively via an encrypted runtime `TENANT_BOOTSTRAP_CONFIG` environment variable without committing credentials.
-- **Integrations & Compliance:** Without live SMTP, Stripe, or DNS/hosting keys configured, registration, verification, invites and checkout report `not_configured` honestly. Legal pages are templates requiring counsel review, and software controls alone do not constitute HIPAA certification — see `docs/HIPAA_READINESS.md` for technical vs administrative/BAA requirements.
+- **Integrations & Compliance:** Without live SMTP, Stripe, or DNS/hosting keys configured, registration, verification, invites and checkout report `not_configured` honestly. Software controls alone do not constitute HIPAA certification — see `docs/HIPAA_READINESS.md` for technical vs administrative/BAA requirements.
 
 ## 9. Security & launch checklist
 - [ ] Rotate any dev credentials; disable `/api/seed` in production; set strong `JWT_SECRET`
@@ -77,3 +77,26 @@ Pick **one** method — real emails/passwords must never be committed:
 
 ## 14. Troubleshooting: Database Bootstrapping & Switching Neon Databases
 `/api/health` reports database reachability and schema readiness without exposing secrets. When switching to a brand-new empty Neon database in Vercel (setting `DATABASE_URL` and optionally `DATABASE_URL_POOLED`), hitting `/api/health`, `/login`, or `/register` **automatically bootstraps the full Drizzle schema (`0000`–`0006`), standard CARC/RARC catalog, and default plans** on first request using an idempotent direct connection and PostgreSQL advisory lock — no local CLI step required (though `npm run db:migrate` also runs all migrations idempotently and verifies core tables).
+
+## 15. Legal documents (source of truth)
+
+The six legal agreements are version-controlled TypeScript documents in `src/lib/legal/` — not CMS text — so pricing, entity details and cross-references cannot drift from the live product:
+
+| File | Document | Route |
+| --- | --- | --- |
+| `terms.ts` | Terms of Service | `/legal/terms` |
+| `privacy.ts` | Privacy Policy | `/legal/privacy` |
+| `subscription.ts` | Subscription, Billing, Refund and Cancellation Policy | `/legal/subscription` |
+| `cookies.ts` | Cookie Policy | `/legal/cookies` |
+| `dpa.ts` | Data Processing Agreement (executable) | `/legal/dpa` |
+| `baa.ts` | HIPAA Business Associate Agreement (executable) | `/legal/baa` |
+
+- **Business identity is configuration, not code.** `LEGAL_ENTITY_NAME`, `LEGAL_ADDRESS_*`, `LEGAL_SUPPORT_EMAIL`, `LEGAL_GOVERNING_STATE` and related variables (see `.env.example`) are substituted at render time. Anything unset renders as a visible amber `[[TOKEN]]` and shows an operator notice — the documents never invent an address, an email, or a governing-law state.
+- **Prices are derived.** `facts.ts` builds the price sentences and the subscription table from the same plan rows that `/pricing` and Stripe Checkout use, so a re-priced plan updates the agreements automatically.
+- **Two marker types.** `[[TOKEN]]` = a business fact to supply. `{{COUNSEL: …}}` / `{{CONFIRM: …}}` = a legal or operational decision, surfaced in a "Decisions reserved for legal counsel" panel on each page.
+- **Verification:** `npm run test:legal` asserts 18 invariants — section completeness, absence of template language, no invented contact details, price derivation, cookie names matching the code, cross-reference numbering, and that documented billing behavior matches `checkout`/`manage`/`webhook`. Run it on every release and whenever a subprocessor, cookie, or price changes.
+- **Admin UI:** `/admin/platform` → Website no longer edits legal text (the old free-text field was removed to keep placeholders out of production).
+
+**Stripe prerequisite:** the checkout route requires an affirmative terms acceptance (`consent_collection[terms_of_service]=required`). Stripe only permits this when a Terms of Service URL is configured in **Dashboard → Settings → Business → Public details**. Set it to `/legal/terms` (plus `/legal/privacy` and `/legal/subscription`), otherwise checkout returns a 503 explaining exactly that.
+
+See `docs/LEGAL_COMPLIANCE_AUDIT.md` for the full requirement-by-requirement audit and the pre-launch checklist.

@@ -54,3 +54,31 @@ html.a11y-reduce-motion .mkt-tilt { transform: none !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* ===== Legal document design system =====
+   Shared typography, print formatting, and screen-reader-friendly structure for
+   /legal/* agreements. Kept in plain CSS so it applies inside the marketing shell
+   without changing the rest of the application. */
+.legal-prose { hyphens: none; text-wrap: pretty; }
+.legal-prose p, .legal-prose li { max-width: 72ch; }
+.legal-h2:target, .legal-h3:target { background: #eff6ff; border-radius: 6px; }
+.legal-prose table { font-variant-numeric: tabular-nums; }
+
+@media print {
+  /* Only the document body prints: no nav, no footer, no buttons, no TOC. */
+  .legal-no-print,
+  header nav[aria-label="Breadcrumb"],
+  footer[aria-label="Site footer"],
+  header.sticky,
+  #legal-toc-list { display: none !important; }
+  html, body { background: #fff !important; color: #000 !important; }
+  .legal-prose { font-size: 10.5pt; }
+  .legal-prose p, .legal-prose li, .legal-prose dd, .legal-prose td { color: #000 !important; }
+  .legal-prose a { color: #000 !important; text-decoration: underline; }
+  .legal-prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8.5pt; word-break: break-all; }
+  .legal-prose h2, .legal-prose h3 { break-after: avoid; page-break-after: avoid; color: #000 !important; }
+  .legal-prose table, .legal-prose figure, .legal-prose aside { break-inside: avoid; page-break-inside: avoid; }
+  .legal-prose tr { break-inside: avoid; page-break-inside: avoid; }
+  .legal-prose thead { display: table-header-group; }
+  @page { margin: 18mm 16mm; }
+}

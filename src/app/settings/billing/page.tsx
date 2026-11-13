@@ -1,8 +1,12 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { AppLayout } from '@/components/layout/AppLayout';
 
-export default function BillingSettingsPage() {
+function BillingSettingsInner() {
+  const searchParams = useSearchParams();
+  const checkoutResult = searchParams.get('checkout');
   const [data, setData] = useState<any>(null);
   const [plans, setPlans] = useState<any[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -68,6 +72,28 @@ export default function BillingSettingsPage() {
   return (
     <AppLayout title="Billing & Plan">
       <div className="max-w-4xl mx-auto space-y-6">
+        {checkoutResult === 'success' && sub?.status !== 'active' && (
+          <div role="status" className="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-sm text-blue-900">
+            <b>Checkout completed — waiting for confirmation.</b> Your plan becomes active as soon as
+            the payment provider confirms the payment, which is usually immediate. This page updates
+            automatically; reload in a moment if the status below still shows a trial.
+          </div>
+        )}
+        {sub?.cancelAtPeriodEnd && (
+          <div
+            role="status"
+            className="bg-amber-50 border border-amber-300 rounded-2xl p-4 text-sm text-amber-900"
+          >
+            <b>Cancelled — no further charges.</b> Your subscription will not renew.
+            {sub.currentPeriodEnd && (
+              <> You keep full access until{' '}
+                <b>{new Date(sub.currentPeriodEnd).toLocaleDateString()}</b>.
+              </>
+            )}{' '}
+            You can resume below at any time before then. Export any records you need to keep
+            before access ends.
+          </div>
+        )}
         <div className="bg-white rounded-2xl shadow-sm border p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
@@ -110,6 +136,19 @@ export default function BillingSettingsPage() {
                   <button
                     className="px-3 py-1.5 border border-red-200 text-red-600 hover:bg-red-50 rounded-lg text-xs font-semibold"
                     onClick={async () => {
+                      const endsOn = sub?.currentPeriodEnd
+                        ? new Date(sub.currentPeriodEnd).toLocaleDateString()
+                        : 'the end of your current billing period';
+                      if (
+                        !window.confirm(
+                          `Cancel your subscription?\n\n` +
+                            `• You keep full access until ${endsOn}.\n` +
+                            `• Your subscription will not renew and you will not be charged again.\n` +
+                            `• Your data is retained and you can export it after cancelling.\n\n` +
+                            `See the Subscription, Billing, Refund and Cancellation Policy for refund terms.`
+                        )
+                      )
+                        return;
                       const r = await fetch('/api/subscriptions/manage', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -119,7 +158,11 @@ export default function BillingSettingsPage() {
                         }),
                       });
                       const d = await r.json();
-                      setMsg(d.message || d.error || 'Cancellation scheduled.');
+                      setMsg(
+                        r.ok
+                          ? d.message || 'Cancelled. Your subscription will not renew.'
+                          : d.error || 'Cancellation failed. Contact support.'
+                      );
                       loadBilling();
                     }}
                   >
@@ -220,6 +263,18 @@ export default function BillingSettingsPage() {
             Paid plans activate only after the payment provider confirms via webhook — returning
             from checkout alone never activates a subscription.
           </p>
+          <p className="mt-2 text-xs text-slate-500">
+            Billing is processed by Stripe. Subscriptions renew automatically until cancelled.
+            Review the{' '}
+            <Link href="/legal/subscription" className="text-[#2563EB] underline">
+              Subscription, Billing, Refund and Cancellation Policy
+            </Link>{' '}
+            and the{' '}
+            <Link href="/legal/terms" className="text-[#2563EB] underline">
+              Terms of Service
+            </Link>
+            .
+          </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border p-6">
@@ -274,5 +329,17 @@ export default function BillingSettingsPage() {
         </div>
       </div>
     </AppLayout>
+  );
+}
+
+/**
+ * `useSearchParams` requires a Suspense boundary so the route can be prerendered
+ * without reading the query string at build time.
+ */
+export default function BillingSettingsPage() {
+  return (
+    <Suspense fallback={<AppLayout title="Billing & Plan"><div className="p-8 text-sm text-slate-600">Loading billing…</div></AppLayout>}>
+      <BillingSettingsInner />
+    </Suspense>
   );
 }

@@ -10,7 +10,8 @@
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "node scripts/migrate.mjs",
-    "bootstrap:admin": "node scripts/bootstrap-platform-admin.mjs"
+    "bootstrap:admin": "node scripts/bootstrap-platform-admin.mjs",
+    "test:legal": "node --experimental-strip-types --test tests/legal-compliance.test.mjs"
   },
   "dependencies": {
     "@lowlysre/icd-10-cm": "^3.1.1",
