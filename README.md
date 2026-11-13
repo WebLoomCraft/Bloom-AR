@@ -1,5 +1,7 @@
 # BloomAR Manager — Medical Billing AR Management System
 
+> BloomAR Manager is the software product of **BloomRCM** ([bloomrcm.vercel.app](https://bloomrcm.vercel.app)). Business & support email: **bloomrcm@gmail.com**.
+
 **Version 3.0.0** · Made with ❤️ by WebLoom
 
 A comprehensive, enterprise-grade web application for managing Accounts Receivable, billing operations, authorization workflows, coding reviews, team communication, and performance analytics in medical billing companies.
@@ -119,7 +121,7 @@ SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=your-email@example.com
 SMTP_PASS=your-password
-SMTP_FROM="BloomAR Manager <noreply@example.com>"
+SMTP_FROM="BloomRCM <bloomrcm@gmail.com>"
 ```
 
 ### First-Time Setup

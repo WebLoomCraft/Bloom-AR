@@ -6,6 +6,35 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 ---
 
+## [Unreleased] — Legal compliance & Stripe readiness
+
+- **Business identity corrected:** operating business is now **BloomRCM** (bloomrcm.vercel.app) d/b/a BloomAR Manager everywhere (legal agreements, footer, contact, about, legal index, `.env.example`, email sender fallback). Business/support/privacy/security/legal email is **bloomrcm@gmail.com** on every surface. No other business name appears in the repository (an earlier preview-only test name was never committed). BloomRCM postal address, state of organization, governing law and venue remain placeholders until supplied.
+
+### Added
+- **Six production legal agreements** as version-controlled documents in `src/lib/legal/` (Terms of Service, Privacy Policy, Subscription/Billing/Refund/Cancellation Policy, Cookie Policy, Data Processing Agreement, HIPAA Business Associate Agreement), replacing the CMS "template" paragraphs.
+- New `/legal` index with document cards, routing guidance by user need, issuer identity, and a conditional notice listing unresolved business details.
+- Structured block renderer (`src/components/legal/`) with sticky table of contents (collapsible on mobile), active-section tracking, definition lists, captioned tables, three callout tones, signature blocks, "Related documents" cross-links, and a "Decisions reserved for legal counsel" panel.
+- Print/PDF stylesheet: hides navigation, TOC, buttons and footer; avoids page breaks inside tables and callouts; repeats table headers; renders external URLs inline.
+- Business identity is configuration: `LEGAL_*` environment variables populate entity name, address, support/privacy/security/legal contacts, governing law and venue. Unset values render as visible `[[TOKEN]]` placeholders so no detail is fabricated.
+- `npm run test:legal` — 18 invariants covering document completeness, absence of template language, no invented contact details, price derivation from the live plan catalog, cookie/local-storage names matching the code, cross-reference numbering, and consistency between documented billing behavior and the checkout/manage/webhook routes.
+- `docs/LEGAL_COMPLIANCE_AUDIT.md` — requirement-by-requirement audit and pre-launch checklist.
+
+### Changed
+- Prices inside the agreements are generated from the same plan rows that `/pricing` and Stripe Checkout use, so contractual pricing cannot drift from the product.
+- Footer lists all six legal documents in a fixed order and states USD pricing plus the software-only, no-reimbursement-guarantee position.
+- Legal text is no longer editable in `/admin/platform` → Website (removed to keep placeholders out of production).
+
+### Fixed
+- **Cancellation was broken end to end:** the Billing page posted `cancel_at_period_end`, which the subscriptions route did not handle, and no Stripe API call was made — so a customer could "cancel" and still be billed. The action is now accepted, propagated to Stripe, and any failure is reported honestly rather than swallowed.
+- Cancel confirmation dialog now states the access-end date and consequences; the Billing page shows a persistent cancellation banner.
+- Refunds now update the invoice ledger (`charge.refunded`, `invoice.payment_refunded`).
+- 13 hard-coded "see Section N" cross-references in the legal documents pointed at the wrong clauses; all corrected and covered by a regression test.
+- Optional address line no longer renders as an empty placeholder.
+- `useSearchParams` on the Billing page is wrapped in a Suspense boundary.
+- Checkout now requires an affirmative terms acceptance (`consent_collection[terms_of_service]=required`), links the Terms and Subscription policies, states the automatic-renewal cadence for the interval purchased, and names the plan and interval on the invoice. Consent is written to the audit log on `checkout.session.completed`. Missing Stripe public-details URLs now produce a precise operator message instead of a generic 502.
+
+---
+
 ## [3.0.0] - 2025-07-02
 
 ### Added — Five Major Features

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     .where(eq(subscriptions.organizationId, ctx.organizationId))
     .limit(1);
 
-  if (action === 'cancel') {
+  if (action === 'cancel_at_period_end' || action === 'cancel') {
     if (!existingSub) {
       return NextResponse.json({ error: 'No active subscription found' }, { status: 404 });
     }
@@ -36,6 +36,41 @@ export async function POST(req: NextRequest) {
       })
       .where(eq(subscriptions.id, existingSub.id));
 
+    // Propagate to Stripe. Without this the provider keeps billing the customer even
+    // though our records say "cancelled" — which would make the published cancellation
+    // policy untrue. If Stripe cannot be reached we report it honestly rather than
+    // claiming the cancellation is complete.
+    let stripePropagated = false;
+    let stripeWarning: string | undefined;
+    if (process.env.STRIPE_SECRET_KEY && existingSub.externalSubscriptionId) {
+      try {
+        const r = await fetch(
+          `https://api.stripe.com/v1/subscriptions/${encodeURIComponent(existingSub.externalSubscriptionId)}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ cancel_at_period_end: 'true' }),
+          }
+        );
+        stripePropagated = r.ok;
+        if (!r.ok) {
+          const d = await r.json().catch(() => null);
+          stripeWarning =
+            d?.error?.message ||
+            'Cancellation was recorded but the payment provider did not confirm it. Contact support to be certain billing stops.';
+        }
+      } catch {
+        stripeWarning =
+          'Cancellation was recorded but the payment provider could not be reached. Contact support to be certain billing stops.';
+      }
+    } else if (existingSub.billingProvider === 'stripe') {
+      stripeWarning =
+        'No payment-provider subscription is linked to this workspace, so only our records were updated. Contact support if you see further charges.';
+    }
+
     await createAuditLog({
       organizationId: ctx.organizationId,
       userId: ctx.user.id,
@@ -43,10 +78,16 @@ export async function POST(req: NextRequest) {
       action: 'subscription_cancel_scheduled',
       entityType: 'subscription',
       entityId: existingSub.id,
+      newValue: { cancelAtPeriodEnd: true, stripePropagated },
     });
 
     return NextResponse.json({
       success: true,
+      cancelAtPeriodEnd: true,
+      stripePropagated,
+      message: stripeWarning
+        ? stripeWarning
+        : 'Cancelled. Your subscription will not renew; access continues to the end of the current billing period.',
       entitlements: await getEntitlements(ctx.organizationId),
     });
   }
@@ -63,6 +104,24 @@ export async function POST(req: NextRequest) {
         updatedAt: new Date(),
       })
       .where(eq(subscriptions.id, existingSub.id));
+
+    if (process.env.STRIPE_SECRET_KEY && existingSub.externalSubscriptionId) {
+      try {
+        await fetch(
+          `https://api.stripe.com/v1/subscriptions/${encodeURIComponent(existingSub.externalSubscriptionId)}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ cancel_at_period_end: 'false' }),
+          }
+        );
+      } catch {
+        // Non-fatal: the local flag is already cleared and the next webhook reconciles state.
+      }
+    }
 
     await createAuditLog({
       organizationId: ctx.organizationId,

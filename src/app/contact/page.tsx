@@ -86,7 +86,7 @@ function Inner() {
             <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" value={form.website} onChange={e => set('website', e.target.value)} aria-hidden="true" />
             <button disabled={state === 'sending'} className="mt-6 w-full rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-600/25 transition hover:-translate-y-0.5 hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-60 sm:w-auto">
               {state === 'sending' ? 'Sending…' : 'Send request'}</button>
-            {state === 'failed' && <p role="alert" className="mt-3 text-sm font-medium text-red-700">Something went wrong sending your request. Please try again, or email us via the address in the footer.</p>}
+            {state === 'failed' && <p role="alert" className="mt-3 text-sm font-medium text-red-700">Something went wrong sending your request. Please try again, or email us directly at bloomrcm@gmail.com.</p>}
             <p className="mt-3 text-xs text-slate-600">By submitting, you agree to our <Link href="/legal/privacy" className="text-blue-700 underline">Privacy Policy</Link>. We reply by email; we never sell your details.</p>
           </>}
         </form></Reveal>
@@ -94,6 +94,10 @@ function Inner() {
         <Reveal delay={120}><aside aria-label="What happens next" className="space-y-4">
           <div className="rounded-3xl bg-[#0F2D52] p-6 text-white"><h2 className="font-extrabold">What happens next?</h2>
             <ol className="mt-3 space-y-3 text-sm">{[['1', 'We read & route it', 'Your request lands in our admin Leads Inbox tagged demo, sales or support.'], ['2', 'You get a human reply', 'Within the timeframe on your selected card — no auto-responder spam.'], ['3', 'Next step, your choice', 'A demo call, plan guidance, or straight into a free trial workspace.']].map(([n, t, d]) => <li key={n} className="flex gap-3"><span aria-hidden="true" className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold">{n}</span><span><b>{t}.</b> <span className="text-white/75">{d}</span></span></li>)}</ol></div>
+          <div className="rounded-3xl border bg-white p-6"><h2 className="font-extrabold text-[#0F2D52]">Email BloomRCM directly</h2>
+            <p className="mt-2 text-sm text-slate-600">Business &amp; support email: <a className="font-semibold text-blue-700 hover:underline" href="mailto:bloomrcm@gmail.com">bloomrcm@gmail.com</a></p>
+            <p className="mt-1 text-sm text-slate-600">BloomRCM website: <a className="font-semibold text-blue-700 hover:underline" href="https://bloomrcm.vercel.app" target="_blank" rel="noreferrer">bloomrcm.vercel.app</a></p>
+            <p className="mt-2 text-xs text-slate-500">BloomAR Manager is the software product of BloomRCM. Please don&apos;t send patient information (PHI) by email.</p></div>
           <div className="rounded-3xl border bg-white p-6"><h2 className="font-extrabold text-[#0F2D52]">Rather explore first?</h2>
             <ul className="mt-2 space-y-2 text-sm">{[['/features', 'See every module →'], ['/pricing', 'Compare plans & prices →'], ['/faq', 'Read the FAQ →'], ['/register', 'Start the free trial →']].map(([h, l]) => <li key={h}><Link href={h} className="font-semibold text-blue-700 hover:underline focus-visible:outline-2 focus-visible:outline-blue-600">{l}</Link></li>)}</ul></div>
         </aside></Reveal>
