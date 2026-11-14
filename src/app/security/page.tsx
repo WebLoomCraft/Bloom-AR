@@ -142,12 +142,12 @@ export default async function Page() {
               <h2 className="text-xl font-extrabold">What we do not claim</h2>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-white/80">
                 <li>
-                  No software can honestly be called "unbreachable." We publish the controls we
+                  No software can honestly be called &ldquo;unbreachable.&rdquo; We publish the controls we
                   run, fix what we find, and tell you how to report what we miss.
                 </li>
                 <li>
                   HIPAA has no government certification for software, and we do not claim to be
-                  "HIPAA certified." A signed BAA, your own risk analysis, and workforce policies
+                  &ldquo;HIPAA certified.&rdquo; A signed BAA, your own risk analysis, and workforce policies
                   remain necessary — see the BAA and HIPAA readiness notes.
                 </li>
                 <li>
@@ -170,7 +170,7 @@ export default async function Page() {
                 </a>{' '}
                 with the page or endpoint, what you did, and what happened. Please give us a
                 reasonable chance to fix it before publishing details, and never access another
-                organization's data while testing. Our machine-readable policy is at{' '}
+                organization&apos;s data while testing. Our machine-readable policy is at{' '}
                 <Link href="/.well-known/security.txt" className="font-semibold text-blue-700 underline">
                   /.well-known/security.txt
                 </Link>
