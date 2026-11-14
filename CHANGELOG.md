@@ -1,3 +1,10 @@
+## [Unreleased] — Software-side security hardening + public Security page
+
+- **New edge security layer** (`src/proxy.ts`): Content-Security-Policy/HSTS/nosniff/referrer/permissions headers on every response, CSRF origin validation for all state-changing API requests (compensating for the `SameSite=None` session cookie; Stripe webhook and API-key routes exempt), and per-IP burst rate limiting ahead of the database limiter.
+- **One password policy** (12+ chars, mixed case + digit, common-password blocklist) enforced at registration, reset, and change — replacing inconsistent 8/10-char rules.
+- **Upload hardening**: 25MB cap and magic-byte content verification on both AR import routes (renamed-file spoofing rejected).
+- **Public Security page** (`/security`, linked in nav/footer/home/features) describing only implemented measures, an explicit "what we do not claim" section, and vulnerability reporting; RFC 9116 `/.well-known/security.txt` published (bloomrcm@gmail.com). Cookie config gains `SESSION_COOKIE_SAMESITE` for first-party deployments.
+
 ## [Unreleased] — Multi-language interface (i18n)
 
 - **Language & region picker** in the app header, sidebar, marketing nav, login screen, and Account Settings → Preferences. Regions/languages: United States (English, Spanish), United Kingdom (English), Pakistan (Urdu, English), India (Hindi, Punjabi, English), Bangladesh (Bangla), Middle East (Arabic).

@@ -13,6 +13,7 @@ import { slugify, validateSlug, makeToken, hashToken, ensureDefaultPlans } from 
 import { sendVerificationEmail } from '@/lib/auth-emails';
 import { isEmailConfigured } from '@/lib/email';
 import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
+import { validatePasswordStrength } from '@/lib/security/password';
 import { ensureSaaSColumns, schemaHint, safeErrorDetail } from '@/lib/db-schema';
 
 export async function POST(req: NextRequest) {
@@ -56,11 +57,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    if (String(password).length < 10) {
-      return NextResponse.json(
-        { error: 'Password must be at least 10 characters' },
-        { status: 400 }
-      );
+    const pwCheck = validatePasswordStrength(password);
+    if (!pwCheck.ok) {
+      return NextResponse.json({ error: pwCheck.error }, { status: 400 });
     }
 
     const normEmail = String(email).toLowerCase().trim();

@@ -27,6 +27,14 @@
 - **Session Controls (`45 CFR §164.312(a)(2)(iii)`)**: Unique JWT `jti` per session, server-side session revocation (`/api/account/sessions`), 8-hour server idle timeout, 7-day absolute session lifetime, and configurable client inactivity auto-logoff (`SessionGuard`).
 - **Scoped API Keys**: External `/api/v1/*` keys are SHA-256 hashed at rest, bound to a single `organization_id`, and enforce explicit scopes (`claims:read`).
 
+### 1.5 Browser, CSRF & Edge Controls (application-side)
+- **HTTP security headers** (`src/proxy.ts`, `src/lib/security/headers.ts`): Content-Security-Policy, HSTS on HTTPS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` on every response.
+- **CSRF origin validation** (`src/lib/security/csrf.ts`): every state-changing `/api/*` request must prove same-origin provenance (the session cookie is `SameSite=None` for permitted preview embedding; `SESSION_COOKIE_SAMESITE=lax` is available for first-party deployments). Stripe webhooks (HMAC) and hashed-API-key routes are exempt by design.
+- **Rate limiting**: per-IP burst limit at the edge plus durable per-endpoint database limits.
+- **Upload validation** (`src/lib/security/files.ts`): extension allow-list, 25MB cap, magic-byte content checks.
+- **Password policy** (`src/lib/security/password.ts`): 12+ characters with mixed case and a digit, enforced identically at registration, reset, and change.
+- Public summary and vulnerability disclosure: `/security` and `/.well-known/security.txt` (see `docs/SECURITY.md`).
+
 ### 1.4 Audit Controls (`45 CFR §164.312(b)`)
 - **Tenant-Scoped Audit Trail**: Authentication events, MFA changes, workspace switches, user/role updates, claim workflow transitions, document uploads, payment/ERA postings, and coding edits write structured records to `audit_logs` tagged with `organization_id`, `user_id`, `actor_role`, IP address, and user agent.
 - **Tenant Isolation of Audit Logs**: `/api/audit-logs` and `/api/export?type=audit_logs` strictly filter by `eq(auditLogs.organizationId, ctx.organizationId)`.

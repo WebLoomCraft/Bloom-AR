@@ -4,6 +4,7 @@ import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { getCurrentUser, verifyPassword, hashPassword } from '@/lib/auth';
 import { createAuditLog } from '@/lib/audit';
+import { validatePasswordStrength } from '@/lib/security/password';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,11 +29,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (newPassword.length < 8) {
-      return NextResponse.json(
-        { error: 'New password must be at least 8 characters long.' },
-        { status: 400 }
-      );
+    const pwCheck = validatePasswordStrength(newPassword);
+    if (!pwCheck.ok) {
+      return NextResponse.json({ error: pwCheck.error }, { status: 400 });
     }
 
     // Fetch user password hash
