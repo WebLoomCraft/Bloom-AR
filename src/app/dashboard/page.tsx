@@ -14,6 +14,7 @@ import {
   Activity,
 } from 'lucide-react';
 import { MedicalInlineLoader } from '@/components/ui/MedicalLoader';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 interface DashboardData {
   summary: {
@@ -85,16 +86,10 @@ function StatCard({
   );
 }
 
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
+// Currency amounts stay USD; grouping/digits follow the chosen locale.
 
 export default function DashboardPage() {
+  const { t, formatCurrency } = useI18n();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -119,7 +114,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <AppLayout title="Dashboard">
-        <MedicalInlineLoader message="Loading dashboard analytics..." />
+        <MedicalInlineLoader message={t('dashboard.loading')} />
       </AppLayout>
     );
   }
@@ -128,7 +123,7 @@ export default function DashboardPage() {
     return (
       <AppLayout title="Dashboard">
         <div className="text-center py-12 text-slate-500">
-          Failed to load dashboard data
+          {t('dashboard.failed')}
         </div>
       </AppLayout>
     );
@@ -139,25 +134,25 @@ export default function DashboardPage() {
       {/* Main Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          title="Total Claims"
+          title={t('dashboard.totalClaims')}
           value={data.summary.total}
           icon={FileText}
           color="blue"
         />
         <StatCard
-          title="Pending Review"
+          title={t('dashboard.pendingReview')}
           value={data.activity.pendingReviews}
           icon={Clock}
           color="yellow"
         />
         <StatCard
-          title="Approved"
+          title={t('dashboard.approved')}
           value={data.summary.approved}
           icon={CheckCircle}
           color="green"
         />
         <StatCard
-          title="Denied"
+          title={t('dashboard.denied')}
           value={data.summary.denied}
           icon={AlertTriangle}
           color="red"
@@ -167,19 +162,19 @@ export default function DashboardPage() {
       {/* Financial Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <StatCard
-          title="Total Billed"
+          title={t('dashboard.totalBilled')}
           value={formatCurrency(data.financials.totalBilled)}
           icon={DollarSign}
           color="blue"
         />
         <StatCard
-          title="Total Paid"
+          title={t('dashboard.totalPaid')}
           value={formatCurrency(data.financials.totalPaid)}
           icon={TrendingUp}
           color="green"
         />
         <StatCard
-          title="Outstanding Balance"
+          title={t('dashboard.outstanding')}
           value={formatCurrency(data.financials.totalBalance)}
           icon={Activity}
           color="purple"
@@ -189,19 +184,19 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Claims by Status */}
         <Card>
-          <CardHeader title="Claims by Status" />
+          <CardHeader title={t('dashboard.claimsByStatus')} />
           <div className="space-y-3">
             {[
-              { label: 'New', value: data.summary.new, color: 'bg-blue-500' },
-              { label: 'Assigned', value: data.summary.assigned, color: 'bg-purple-500' },
-              { label: 'In Progress', value: data.summary.inProgress, color: 'bg-amber-500' },
-              { label: 'Pending', value: data.summary.pending, color: 'bg-slate-500' },
-              { label: 'Under Review', value: data.summary.submittedForReview, color: 'bg-cyan-500' },
-              { label: 'Rework Required', value: data.summary.reworkRequired, color: 'bg-red-500' },
-              { label: 'Approved', value: data.summary.approved, color: 'bg-emerald-500' },
-              { label: 'Paid', value: data.summary.paid, color: 'bg-green-500' },
-              { label: 'Denied', value: data.summary.denied, color: 'bg-red-600' },
-              { label: 'Closed', value: data.summary.closed, color: 'bg-slate-600' },
+              { label: t('status.new'), value: data.summary.new, color: 'bg-blue-500' },
+              { label: t('status.assigned'), value: data.summary.assigned, color: 'bg-purple-500' },
+              { label: t('status.inProgress'), value: data.summary.inProgress, color: 'bg-amber-500' },
+              { label: t('status.pending'), value: data.summary.pending, color: 'bg-slate-500' },
+              { label: t('status.underReview'), value: data.summary.submittedForReview, color: 'bg-cyan-500' },
+              { label: t('status.reworkRequired'), value: data.summary.reworkRequired, color: 'bg-red-500' },
+              { label: t('status.approved'), value: data.summary.approved, color: 'bg-emerald-500' },
+              { label: t('status.paid'), value: data.summary.paid, color: 'bg-green-500' },
+              { label: t('status.denied'), value: data.summary.denied, color: 'bg-red-600' },
+              { label: t('status.closed'), value: data.summary.closed, color: 'bg-slate-600' },
             ].map((item) => (
               <div key={item.label} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -216,10 +211,10 @@ export default function DashboardPage() {
 
         {/* Claims by Assignee */}
         <Card>
-          <CardHeader title="Claims by Assignee" />
+          <CardHeader title={t('dashboard.claimsByAssignee')} />
           {data.claimsByAssignee.length === 0 ? (
             <div className="text-center py-8 text-slate-500">
-              No assigned claims yet
+              {t('dashboard.noAssigned')}
             </div>
           ) : (
             <div className="space-y-3">
@@ -237,7 +232,7 @@ export default function DashboardPage() {
                     </span>
                   </div>
                   <span className="text-sm font-semibold text-slate-900">
-                    {assignee.count} claims
+                    {t('dashboard.claimsCount', { count: assignee.count })}
                   </span>
                 </div>
               ))}
@@ -248,16 +243,16 @@ export default function DashboardPage() {
 
       {/* Activity Summary */}
       <Card className="mt-6">
-        <CardHeader title="Today's Activity" />
+        <CardHeader title={t('dashboard.todayActivity')} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-600 font-medium">Claims Updated Today</p>
+            <p className="text-sm text-blue-600 font-medium">{t('dashboard.claimsUpdatedToday')}</p>
             <p className="text-3xl font-bold text-blue-700 mt-1">
               {data.activity.todayUpdated}
             </p>
           </div>
           <div className="p-4 bg-amber-50 rounded-lg">
-            <p className="text-sm text-amber-600 font-medium">Pending Reviews</p>
+            <p className="text-sm text-amber-600 font-medium">{t('dashboard.pendingReviews')}</p>
             <p className="text-3xl font-bold text-amber-700 mt-1">
               {data.activity.pendingReviews}
             </p>

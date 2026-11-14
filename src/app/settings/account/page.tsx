@@ -3,6 +3,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { MfaAuthenticatorCard } from '@/components/security/MfaAuthenticatorCard';
+import { LanguageSettingsCard } from '@/components/i18n/LanguageSettingsCard';
 
 const inp = 'w-full border rounded-lg px-3 py-2 text-sm';
 const lbl = 'block text-xs font-semibold text-slate-500 mt-3';
@@ -257,6 +258,8 @@ function AccountSettingsContent() {
           </>
         )}
         {tab === 'preferences' && (
+          <>
+          <LanguageSettingsCard />
           <section className={card}>
             <h2 className="font-bold">Preferences</h2>
             <label className={lbl}>Date format</label>
@@ -302,6 +305,7 @@ function AccountSettingsContent() {
               .
             </p>
           </section>
+          </>
         )}
         {tab === 'organizations' && (
           <section className={card}>

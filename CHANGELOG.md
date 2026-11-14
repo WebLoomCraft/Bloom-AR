@@ -1,3 +1,10 @@
+## [Unreleased] — Multi-language interface (i18n)
+
+- **Language & region picker** in the app header, sidebar, marketing nav, login screen, and Account Settings → Preferences. Regions/languages: United States (English, Spanish), United Kingdom (English), Pakistan (Urdu, English), India (Hindi, Punjabi, English), Bangladesh (Bangla), Middle East (Arabic).
+- First visit auto-detects from browser language/time zone; the choice is remembered on the device (`bloomar-locale`). Urdu and Arabic render right-to-left.
+- Translated: sidebar navigation (all items + search), header menus/notifications, app banners, marketing nav, login/MFA, dashboard cards/statuses, and page titles. Dates/numbers/currency format per region (amounts stay USD).
+- Translation is fully on-device from built-in dictionaries — no text, and no PHI, is sent to any external translation service. User-entered data, payer names, and CPT/ICD-10/CARC codes are never altered. Cookie Policy updated for the `bloomar-locale` preference cookie/storage.
+
 # Changelog
 
 All notable changes to the **BloomAR Manager — Medical Billing AR Management System** will be documented in this file.

@@ -336,6 +336,11 @@ test('Cookie Policy names every cookie the application actually sets', () => {
   const sk = /SESSION_SECURITY_STORAGE_KEY = '([^']+)'/.exec(sessionSec)[1];
   assert.ok(cookies.includes(`\`${sk}\``), `cookie policy documents ${sk}`);
 
+  // The language-preference cookie/storage set by the i18n provider is documented.
+  assert.match(read('src/components/i18n/I18nProvider.tsx'), /LOCALE_STORAGE_KEY/);
+  assert.ok(cookies.includes('`bloomar-locale`'), 'cookie policy documents bloomar-locale');
+  assert.match(cookies, /two first-party cookies/i);
+
   // No claim that analytics cookies exist, and no claim they are absent while one is loaded.
   assert.match(cookies, /No analytics cookies/i);
 });

@@ -6,6 +6,7 @@ import { Header, type WorkspaceMembership } from './Header';
 import { MedicalLoadingScreen } from '@/components/ui/MedicalLoader';
 import SessionGuard from '@/components/auth/SessionGuard';
 import { clearStoredSessionSecurity } from '@/lib/session-security';
+import { useI18n } from '@/components/i18n/I18nProvider';
 
 interface AppUser {
   id: string;
@@ -27,6 +28,7 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children, title }: AppLayoutProps) {
+  const { t, dir } = useI18n();
   const [user, setUser] = useState<AppUser | null>(null);
   const [authState, setAuthState] = useState<'loading' | 'authenticated' | 'unauthenticated'>(
     'loading'
@@ -69,7 +71,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   };
 
   if (authState === 'loading') {
-    return <MedicalLoadingScreen message="Connecting to AR Management System..." />;
+    return <MedicalLoadingScreen message={t('shell.connecting')} />;
   }
 
   if (authState === 'unauthenticated' || !user) {
@@ -91,13 +93,13 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-slate-900 mb-2">Session Expired</h2>
-          <p className="text-[#64748B] text-sm mb-6">Please sign in to continue.</p>
+          <h2 className="text-lg font-semibold text-slate-900 mb-2">{t('shell.sessionExpired')}</h2>
+          <p className="text-[#64748B] text-sm mb-6">{t('shell.signInToContinue')}</p>
           <a
             href="/login"
             className="inline-flex items-center justify-center px-6 py-2.5 bg-[#2563EB] text-white rounded-lg hover:bg-[#1d4ed8] font-medium text-sm transition-colors"
           >
-            Go to Login
+            {t('shell.goToLogin')}
           </a>
         </div>
       </div>
@@ -116,30 +118,31 @@ export function AppLayout({ children, title }: AppLayoutProps) {
         />
         <div
           className={`flex-1 flex flex-col transition-all duration-300 ${
-            collapsed ? 'ml-[60px]' : 'ml-[240px]'
+            collapsed
+              ? dir === 'rtl'
+                ? 'mr-[60px]'
+                : 'ml-[60px]'
+              : dir === 'rtl'
+                ? 'mr-[240px]'
+                : 'ml-[240px]'
           }`}
         >
           <Header user={user} title={title} />
           {user.organizationStatus === 'suspended' && (
             <div className="bg-red-600 text-white px-6 py-2 text-xs font-medium flex items-center justify-between">
-              <span>
-                This organization workspace is currently suspended. Operational data access is
-                restricted until reactivated by a platform administrator.
-              </span>
+              <span>{t('shell.suspended')}</span>
             </div>
           )}
           {user.orgRole === 'read_only' && user.organizationStatus !== 'suspended' && (
             <div className="bg-amber-50 border-b border-amber-200 text-amber-900 px-6 py-2 text-xs font-medium">
-              Read-Only Access — You can view dashboards, claims, and reports in{' '}
-              <b>{user.organizationName || 'this workspace'}</b>, but creating or modifying records
-              is disabled for your role.
+              {t('shell.readOnlyBanner', { org: user.organizationName || t('shell.thisWorkspace') })}
             </div>
           )}
           <main className="flex-1 p-5">{children}</main>
           <footer className="px-5 py-3 border-t border-[#E5E7EB] bg-white">
             <p className="text-center text-[11px] text-[#64748B]">
-              Made with ❤️ by WebLoom &nbsp;|&nbsp; © {new Date().getFullYear()} Web Loom LLC. All
-              rights reserved.
+              BloomRCM · BloomAR Manager &nbsp;|&nbsp; © {new Date().getFullYear()} BloomRCM.{' '}
+              {t('common.allRightsReserved')}
             </p>
           </footer>
         </div>
