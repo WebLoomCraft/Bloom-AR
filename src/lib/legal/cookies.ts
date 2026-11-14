@@ -36,14 +36,14 @@ export function cookiesDocument(): LegalDocument {
       },
       {
         type: 'p',
-        text: 'BloomAR Manager uses one cookie: the session cookie that keeps you signed in. We do not use advertising cookies, remarketing pixels, data-broker tags, cross-site tracking cookies, or session-replay tools. We do not place cookies on public marketing pages at all. We do not load any cookie that contains PHI, and we never pass patient, claim, or clinical information to a tracking system.',
+        text: 'BloomAR Manager uses two first-party cookies: the session cookie that keeps you signed in, and a language-preference cookie that is set only if you change the interface language. We do not use advertising cookies, remarketing pixels, data-broker tags, cross-site tracking cookies, or session-replay tools. Neither cookie contains PHI, and we never pass patient, claim, or clinical information to a tracking system.',
       },
       {
         type: 'callout',
         tone: 'info',
         title: 'Why there is no cookie consent banner',
         text:
-          'Because the only cookie we set is strictly necessary to provide a service you have explicitly requested by signing in, no consent is required for it under U.S. state privacy laws or the cookie rules that apply to our customers\u2019 jurisdictions. Installing a consent banner that collects consent for cookies that do not exist would be misleading. If we introduce analytics, advertising, or personalization cookies, we will add a consent mechanism (with prior opt-in where required) before those cookies are set, and we will update this policy first.',
+          'Because the session cookie is strictly necessary to provide a service you have explicitly requested by signing in, no consent is required for it under U.S. state privacy laws or the cookie rules that apply to our customers\u2019 jurisdictions. The language cookie is a functional preference you set yourself when you pick a language. Installing a consent banner that collects consent for advertising or tracking cookies that do not exist would be misleading. If we introduce analytics, advertising, or personalization cookies, we will add a consent mechanism (with prior opt-in where required) before those cookies are set, and we will update this policy first.',
       },
       { type: 'h2', text: 'Cookies we set' },
       {
@@ -56,6 +56,12 @@ export function cookiesDocument(): LegalDocument {
             'Strictly necessary',
             'Authenticates your session after you sign in. It holds an opaque session token, not your password or any patient data. Server-side, the token is matched to a session record that stores the user, the active organization, and expiry.',
             '7 days from sign-in (absolute), or until you sign out',
+          ],
+          [
+            '`bloomar-locale`',
+            'Functional',
+            'Remembers the interface language and region you picked in the language menu (for example `ur-PK` or `en-GB`), so the app can show it in that language on your next visit. It contains only the language code — no account, patient, or claim data — and translation itself happens entirely in your browser; nothing is sent to a translation service.',
+            '1 year, or until you clear browser data',
           ],
         ],
       },
@@ -91,6 +97,12 @@ export function cookiesDocument(): LegalDocument {
             'Until you clear browser data',
           ],
           [
+            '`bloomar-locale`',
+            'Functional',
+            'The same language/region choice described above, kept in local storage so the interface can apply your language immediately, including right-to-left layout for Urdu and Arabic.',
+            'Until you clear browser data',
+          ],
+          [
             '`ar_session_security`',
             'Functional / security',
             'Stores your own inactivity auto-logoff preference for this browser so the signed-in application can enforce it. Contains a timeout value and related switches only.',
@@ -100,7 +112,7 @@ export function cookiesDocument(): LegalDocument {
       },
       {
         type: 'p',
-        text: 'Both entries are optional in the sense that the application works without them; they only change display and convenience settings. Clearing them resets your preferences. Neither is used to identify you across sites or to build a profile.',
+        text: 'These entries are optional in the sense that the application works without them; they only change display, language and convenience settings. Clearing them resets your preferences. None is used to identify you across sites or to build a profile.',
       },
       { type: 'h2', text: 'Third-party requests and services' },
       {
@@ -152,7 +164,7 @@ export function cookiesDocument(): LegalDocument {
         items: [
           'Sign out at any time from the account menu; this clears the session cookie on your device and revokes the session server-side.',
           'Use **Account Settings \u2192 Security & Sessions** to review active sessions and sign out individual devices or all other devices.',
-          'Clear the two local-storage keys by clearing site data in your browser, which resets the accessibility and session-security preferences.',
+          'Clear the local-storage keys by clearing site data in your browser, which resets the accessibility, language and session-security preferences.',
         ],
       },
       { type: 'h3', text: 'Do Not Track and Global Privacy Control' },

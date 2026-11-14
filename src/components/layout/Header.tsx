@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useI18n } from '@/components/i18n/I18nProvider';
+import { DICTIONARIES } from '@/lib/i18n/dictionary';
+import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher';
 import {
   Bell,
   Building2,
@@ -51,6 +54,17 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 export function Header({ user, title }: HeaderProps) {
+  const { t, locale } = useI18n();
+  // Page titles are passed in English; if a title matches a dictionary entry
+  // (e.g. "Dashboard", "Audit Logs", "Team Chat"), show its translation.
+  const displayTitle = (() => {
+    if (!title) return 'BloomAR Manager';
+    if (locale === 'en-US') return title;
+    const key = Object.keys(DICTIONARIES['en-US']).find(
+      (k) => DICTIONARIES['en-US'][k] === title
+    );
+    return key ? t(key) : title;
+  })();
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -141,7 +155,7 @@ export function Header({ user, title }: HeaderProps) {
       {/* Left: Title */}
       <div className="flex items-center gap-3 min-w-0">
         <h1 className="text-white font-bold text-lg tracking-tight truncate">
-          {title || 'BloomAR Manager'}
+          {displayTitle}
         </h1>
       </div>
 
@@ -155,13 +169,13 @@ export function Header({ user, title }: HeaderProps) {
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/15 text-white text-xs font-medium transition-colors ${
                 memberships.length > 1 ? 'hover:bg-white/15 cursor-pointer' : 'cursor-default'
               }`}
-              title={`Active Organization: ${activeWorkspace.name}`}
+              title={t('header.activeWorkspace', { name: activeWorkspace.name })}
             >
               <Building2 className="w-3.5 h-3.5 text-blue-300 flex-shrink-0" />
               <span className="max-w-[180px] truncate font-semibold">{activeWorkspace.name}</span>
               {user.orgRole === 'read_only' && (
                 <span className="px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-200 text-[10px] font-bold uppercase">
-                  Read-Only
+                  {t('header.readOnly')}
                 </span>
               )}
               {memberships.length > 1 && (
@@ -179,7 +193,7 @@ export function Header({ user, title }: HeaderProps) {
                 <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-[#E5E7EB] z-50 overflow-hidden">
                   <div className="px-4 py-2.5 bg-[#F8FAFC] border-b border-[#E5E7EB]">
                     <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                      Switch Organization Workspace
+                      {t('header.switchWorkspace')}
                     </p>
                   </div>
                   <div className="max-h-64 overflow-y-auto py-1">
@@ -212,6 +226,7 @@ export function Header({ user, title }: HeaderProps) {
           </div>
         )}
 
+        <LanguageSwitcher variant="dark" />
         {/* Notification bell */}
         <div className="relative">
           <button
@@ -231,20 +246,20 @@ export function Header({ user, title }: HeaderProps) {
               <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)} />
               <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-[#E5E7EB] z-50 overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E7EB] bg-[#F5F7FA]">
-                  <span className="font-semibold text-sm text-slate-900">Notifications</span>
+                  <span className="font-semibold text-sm text-slate-900">{t('header.notifications')}</span>
                   {unreadCount > 0 && (
                     <button
                       onClick={markAsRead}
                       className="text-xs text-[#2563EB] hover:text-[#1d4ed8] font-medium"
                     >
-                      Mark all read
+                      {t('header.markAllRead')}
                     </button>
                   )}
                 </div>
                 <div className="max-h-72 overflow-y-auto">
                   {notifications.length === 0 ? (
                     <div className="px-4 py-8 text-center text-[#64748B] text-sm">
-                      No notifications
+                      {t('header.noNotifications')}
                     </div>
                   ) : (
                     notifications.map((n) => (
@@ -319,7 +334,7 @@ export function Header({ user, title }: HeaderProps) {
                         {activeWorkspace.name}
                       </span>
                     )}
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" title="Active" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" title={t('header.active')} />
                   </div>
                 </div>
 
@@ -330,7 +345,7 @@ export function Header({ user, title }: HeaderProps) {
                     className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-slate-50 hover:text-[#2563EB] transition-colors"
                   >
                     <User className="w-4 h-4 text-slate-400" />
-                    <span>Profile &amp; Account Information</span>
+                    <span>{t('header.profileAccount')}</span>
                   </Link>
 
                   <Link
@@ -339,7 +354,7 @@ export function Header({ user, title }: HeaderProps) {
                     className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-slate-50 hover:text-[#2563EB] transition-colors"
                   >
                     <Key className="w-4 h-4 text-slate-400" />
-                    <span>Security, MFA &amp; Sessions</span>
+                    <span>{t('header.securityMfa')}</span>
                   </Link>
 
                   <Link
@@ -348,7 +363,7 @@ export function Header({ user, title }: HeaderProps) {
                     className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-slate-50 hover:text-[#2563EB] transition-colors"
                   >
                     <Sliders className="w-4 h-4 text-slate-400" />
-                    <span>Application Preferences</span>
+                    <span>{t('header.appPreferences')}</span>
                   </Link>
 
                   <Link
@@ -357,7 +372,7 @@ export function Header({ user, title }: HeaderProps) {
                     className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-slate-50 hover:text-[#2563EB] transition-colors"
                   >
                     <Shield className="w-4 h-4 text-slate-400" />
-                    <span>Role &amp; Permissions Matrix</span>
+                    <span>{t('header.rolePermissions')}</span>
                   </Link>
                 </div>
 
@@ -370,7 +385,7 @@ export function Header({ user, title }: HeaderProps) {
                     className="flex items-center gap-2.5 w-full px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
+                    <span>{t('common.signOut')}</span>
                   </button>
                 </div>
               </div>

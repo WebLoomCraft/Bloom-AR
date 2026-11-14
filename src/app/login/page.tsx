@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { BrandMark } from '@/components/ui/BrandMark';
+import { useI18n } from '@/components/i18n/I18nProvider';
+import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher';
 import { AlertCircle, Timer, LogOut, ShieldCheck } from 'lucide-react';
 import { clearStoredSessionSecurity } from '@/lib/session-security';
 
@@ -25,6 +27,7 @@ const SESSION_ENDED_NOTICES: Record<
 };
 
 export default function LoginPage() {
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mfaCode, setMfaCode] = useState('');
@@ -136,7 +139,7 @@ export default function LoginPage() {
               </svg>
             </div>
           </div>
-          <p className="text-white/70 text-sm font-medium">Initializing...</p>
+          <p className="text-white/70 text-sm font-medium">{t('auth.initializing')}</p>
         </div>
       </div>
     );
@@ -144,18 +147,21 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-4">
+      <div className="absolute end-4 top-4 rounded-xl bg-white/95 px-1 shadow-lg">
+        <LanguageSwitcher variant="light" />
+      </div>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <BrandMark size="lg" surface="light" />
           </div>
           <h1 className="text-3xl font-bold text-white">BloomAR Manager</h1>
-          <p className="text-blue-200 mt-2">Medical Billing AR Management System</p>
+          <p className="text-blue-200 mt-2">{t('auth.tagline')}</p>
         </div>
 
         <Card className="shadow-xl">
           <h2 className="text-xl font-semibold text-slate-900 mb-6">
-            {mfaRequired ? 'Two-Factor Verification' : 'Sign in to your workspace'}
+            {mfaRequired ? t('auth.mfaTitle') : t('auth.signInTitle')}
           </h2>
 
           {error && (
@@ -179,20 +185,20 @@ export default function LoginPage() {
             {!mfaRequired ? (
               <>
                 <Input
-                  label="Email Address"
+                  label={t('auth.email')}
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your work email"
+                  placeholder={t('auth.emailPlaceholder')}
                   required
                 />
 
                 <Input
-                  label="Password"
+                  label={t('auth.password')}
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder={t('auth.passwordPlaceholder')}
                   required
                 />
               </>
@@ -201,12 +207,11 @@ export default function LoginPage() {
                 <div className="p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-2.5 text-slate-700">
                   <ShieldCheck className="w-5 h-5 text-[#2563EB] flex-shrink-0 mt-0.5" />
                   <p className="text-xs leading-relaxed">
-                    Enter the 6-digit verification code from your authenticator app, or use one of
-                    your 8-character recovery codes.
+                    {t('auth.mfaHelp')}
                   </p>
                 </div>
                 <Input
-                  label="Verification or Recovery Code"
+                  label={t('auth.mfaCode')}
                   type="text"
                   value={mfaCode}
                   onChange={(e) => setMfaCode(e.target.value)}
@@ -218,7 +223,7 @@ export default function LoginPage() {
             )}
 
             <Button type="submit" className="w-full" size="lg" loading={loading}>
-              {mfaRequired ? 'Verify & Sign In' : 'Sign In'}
+              {mfaRequired ? t('auth.verifySignIn') : t('auth.signIn')}
             </Button>
 
             {mfaRequired && (
@@ -231,24 +236,24 @@ export default function LoginPage() {
                 }}
                 className="w-full text-center text-xs text-slate-500 hover:text-slate-700 mt-2"
               >
-                ← Back to email &amp; password
+                ← {t('auth.backToLogin')}
               </button>
             )}
           </form>
 
           <div className="flex justify-between text-sm mt-5 pt-4 border-t border-slate-100">
             <a href="/register" className="text-blue-600 font-medium hover:underline">
-              Create organization account
+              {t('auth.createAccount')}
             </a>
             <a href="/forgot-password" className="text-blue-600 font-medium hover:underline">
-              Forgot password?
+              {t('auth.forgotPassword')}
             </a>
           </div>
         </Card>
 
         <p className="text-center text-blue-200 text-sm mt-6">
-          Made with ❤️ by WebLoom &nbsp;|&nbsp; © {new Date().getFullYear()} Web Loom LLC. All
-          rights reserved.
+          BloomRCM · BloomAR Manager &nbsp;|&nbsp; © {new Date().getFullYear()} BloomRCM.{' '}
+          {t('common.allRightsReserved')}
         </p>
       </div>
     </div>

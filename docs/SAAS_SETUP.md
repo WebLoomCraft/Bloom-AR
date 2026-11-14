@@ -100,3 +100,7 @@ The six legal agreements are version-controlled TypeScript documents in `src/lib
 **Stripe prerequisite:** the checkout route requires an affirmative terms acceptance (`consent_collection[terms_of_service]=required`). Stripe only permits this when a Terms of Service URL is configured in **Dashboard → Settings → Business → Public details**. Set it to `/legal/terms` (plus `/legal/privacy` and `/legal/subscription`), otherwise checkout returns a 503 explaining exactly that.
 
 See `docs/LEGAL_COMPLIANCE_AUDIT.md` for the full requirement-by-requirement audit and the pre-launch checklist.
+
+## Language & region (i18n)
+
+BloomAR Manager ships with an on-device interface translator (`src/lib/i18n/`, `src/components/i18n/`). Users pick a country/language from the globe menu in the header/sidebar/marketing nav/login, or in **Account Settings → Preferences**; first-time visitors are auto-detected from browser language/time zone. Supported: English (US/UK/Pakistan/India), اردو (Urdu), हिन्दी (Hindi), ਪੰਜਾਬੀ (Punjabi), Español (US), العربية (Arabic, RTL), বাংলা (Bangla). The choice persists in `localStorage` + a `bloomar-locale` cookie (documented in the Cookie Policy). No external translation API is used, so no PHI ever leaves the app for translation. To add a language: add a dictionary in `src/lib/i18n/dictionary.ts`, register it in `src/lib/i18n/locales.ts`, and run `npm test` (coverage is enforced for every sidebar item).

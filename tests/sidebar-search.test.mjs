@@ -115,7 +115,8 @@ test('Sidebar component and deep-linked pages wire search UI and ?tab= query han
 
   const sidebarSrc = fs.readFileSync(path.join(repoRoot, 'src/components/layout/Sidebar.tsx'), 'utf8');
   assert.match(sidebarSrc, /filterSidebarItems/);
-  assert.match(sidebarSrc, /Search sidebar options/);
+  // Aria label is now the translated i18n key (English: 'Search sidebar options').
+  assert.match(sidebarSrc, /common\.searchSidebar/);
   assert.match(sidebarSrc, /ArrowDown/);
   assert.match(sidebarSrc, /ArrowUp/);
 

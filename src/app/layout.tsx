@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { I18nProvider } from "@/components/i18n/I18nProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,14 +13,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body className="bg-[#F5F7FA] text-slate-900 antialiased font-sans">
-        {children}
+        <I18nProvider>{children}</I18nProvider>
         <SpeedInsights />
       </body>
     </html>

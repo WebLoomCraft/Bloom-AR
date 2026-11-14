@@ -37,6 +37,8 @@ import {
   X,
   Lock,
 } from 'lucide-react';
+import { useI18n } from '@/components/i18n/I18nProvider';
+import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher';
 import {
   filterSidebarItems,
   type NavIconKey,
@@ -86,6 +88,7 @@ const ICON_MAP: Record<NavIconKey, React.ElementType> = {
 };
 
 export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: SidebarProps) {
+  const { t } = useI18n();
   const pathname = usePathname();
   const router = useRouter();
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -96,10 +99,21 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
 
   const isSearching = searchQuery.trim().length > 0;
 
-  const filteredItems = useMemo(
-    () => filterSidebarItems(user, searchQuery),
-    [user, searchQuery]
-  );
+  const filteredItems = useMemo(() => {
+    const base = filterSidebarItems(user, searchQuery);
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return base;
+    // Also match the labels the user actually sees in their language.
+    const extra = filterSidebarItems(user, '').filter(
+      (item) =>
+        !base.includes(item) &&
+        (t(`nav.${item.id}`).toLowerCase().includes(q) ||
+          item.keywords.some((k) => k.toLowerCase().includes(q)))
+    );
+    // Include sub-options whose translated label matches, even if the
+    // English search above filtered them out.
+    return [...base, ...extra];
+  }, [user, searchQuery, t]);
 
   useEffect(() => {
     setHighlightedIndex(0);
@@ -179,7 +193,7 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-full bg-[#0F2D52] text-white transition-all duration-300 z-40 ${
+      className={`fixed left-0 rtl:left-auto rtl:right-0 top-0 h-full bg-[#0F2D52] text-white transition-all duration-300 z-40 ${
         collapsed ? 'w-[60px]' : 'w-[240px]'
       }`}
     >
@@ -194,7 +208,7 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
           )}
           <button
             onClick={onToggle}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-label={collapsed ? t('common.expandSidebar') : t('common.collapseSidebar')}
             className={`p-1.5 rounded-md hover:bg-white/10 transition-colors ${collapsed ? 'mx-auto' : ''}`}
           >
             {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -212,8 +226,8 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleSearchKeyDown}
-                placeholder="Search options..."
-                aria-label="Search sidebar options"
+                placeholder={t('common.searchOptions')}
+                aria-label={t('common.searchSidebar')}
                 className="w-full bg-transparent text-xs text-white placeholder:text-white/45 focus:outline-none min-w-0"
               />
               {searchQuery ? (
@@ -243,7 +257,7 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
               type="button"
               onClick={handleCollapsedSearchClick}
               title="Search options (Ctrl+K)"
-              aria-label="Search sidebar options"
+              aria-label={t('common.searchSidebar')}
               className="w-full flex items-center justify-center py-2 rounded-lg text-white/60 hover:bg-white/10 hover:text-white transition-colors"
             >
               <Search className="w-[18px] h-[18px]" />
@@ -255,8 +269,8 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
         <nav className="flex-1 py-2 overflow-y-auto scrollbar-thin">
           {!collapsed && isSearching && filteredItems.length > 0 && (
             <div className="px-3 pt-0.5 pb-1.5 flex items-center justify-between text-[10px] font-semibold uppercase tracking-wider text-white/40">
-              <span>Available Options ({filteredItems.length})</span>
-              <span>↵ Open</span>
+              <span>{t('common.availableOptions', { count: filteredItems.length })}</span>
+              <span>↵ {t('common.open')}</span>
             </div>
           )}
 
@@ -281,7 +295,7 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
                     onMouseEnter={() => {
                       if (isSearching) setHighlightedIndex(idx);
                     }}
-                    title={collapsed ? item.label : undefined}
+                    title={collapsed ? t(`nav.${item.id}`) : undefined}
                     className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] transition-all duration-150 ${
                       isActive
                         ? 'bg-[#2563EB] text-white font-semibold shadow-sm'
@@ -293,10 +307,10 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
                     <Icon className="w-[18px] h-[18px] flex-shrink-0" />
                     {!collapsed && (
                       <div className="min-w-0 flex-1 flex items-center justify-between gap-1.5">
-                        <span className="truncate">{item.label}</span>
+                        <span className="truncate">{t(`nav.${item.id}`)}</span>
                         {item.isSubOption && item.groupLabel && (
                           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-white/10 text-white/65 flex-shrink-0">
-                            {item.groupLabel}
+                            {item.groupLabel === 'AR Claims' ? t('nav.group.arClaims') : item.groupLabel}
                           </span>
                         )}
                       </div>
@@ -309,10 +323,7 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
 
           {!collapsed && isSearching && filteredItems.length === 0 && (
             <div className="px-3 py-6 text-center">
-              <p className="text-xs text-white/55">
-                No available options match{' '}
-                <span className="text-white font-semibold">&ldquo;{searchQuery.trim()}&rdquo;</span>
-              </p>
+              <p className="text-xs text-white/55">{t('common.noOptionsMatch', { query: searchQuery.trim() })}</p>
               <button
                 type="button"
                 onClick={() => {
@@ -321,14 +332,18 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
                 }}
                 className="mt-2.5 text-[11px] font-semibold text-[#60A5FA] hover:text-white transition-colors"
               >
-                Clear search
+                {t('common.clearSearch')}
               </button>
             </div>
           )}
         </nav>
 
+        {/* Language & region */}
+        <div className={`border-t border-white/10 px-2 pt-2 ${collapsed ? 'flex justify-center' : ''}`}>
+          <LanguageSwitcher variant="dark" compact={collapsed} />
+        </div>
         {/* Logout */}
-        <div className="border-t border-white/10 p-2">
+        <div className="p-2">
           <button
             onClick={onLogout}
             className={`flex items-center gap-2.5 px-2.5 py-2 w-full rounded-lg text-white/50 hover:bg-white/8 hover:text-white transition-colors text-[13px] ${
@@ -336,7 +351,7 @@ export function Sidebar({ user, collapsed, onToggle, onExpand, onLogout }: Sideb
             }`}
           >
             <LogOut className="w-[18px] h-[18px]" />
-            {!collapsed && <span>Logout</span>}
+            {!collapsed && <span>{t('common.logout')}</span>}
           </button>
         </div>
       </div>
