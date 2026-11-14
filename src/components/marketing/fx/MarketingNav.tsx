@@ -6,7 +6,7 @@ import A11yToolbar from './A11yToolbar';
 import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher';
 import { useI18n } from '@/components/i18n/I18nProvider';
 import Image from 'next/image';
-const LINK_KEYS = [['/features', 'marketing.features'], ['/pricing', 'marketing.pricing'], ['/about', 'marketing.about'], ['/faq', 'marketing.faq'], ['/contact', 'marketing.contact']] as const;
+const LINK_KEYS = [['/features', 'marketing.features'], ['/pricing', 'marketing.pricing'], ['/about', 'marketing.about'], ['/faq', 'marketing.faq'], ['/security', 'marketing.security'], ['/contact', 'marketing.contact']] as const;
 export default function MarketingNav({ brandName }: { brandName: string }) {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);

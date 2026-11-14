@@ -10,6 +10,7 @@ import { createNotification } from '@/lib/notifications';
 import { ensureSaaSColumns } from '@/lib/db-schema';
 import { requireTenantContext } from '@/lib/tenant-context';
 import { getEntitlements } from '@/lib/saas';
+import { validateUploadMeta, validateUploadSignature, uploadExtension } from '@/lib/security/files';
 
 const BATCH_SIZE = 100;
 
@@ -122,9 +123,14 @@ export async function POST(request: NextRequest) {
     const fileType = fileName.split('.').pop()?.toLowerCase() || '';
     const fileSize = file.size;
 
-    if (!['xlsx', 'xls', 'csv'].includes(fileType)) {
+    const metaCheck = validateUploadMeta(fileName, fileSize);
+    if (!metaCheck.ok) {
+      return NextResponse.json({ error: metaCheck.error }, { status: metaCheck.status ?? 400 });
+    }
+    const headBytes = new Uint8Array(await file.slice(0, 1024).arrayBuffer());
+    if (!validateUploadSignature(uploadExtension(fileName), headBytes)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Supported formats: .xlsx, .xls, .csv' },
+        { error: 'The file content does not match its extension. Upload a genuine .xlsx, .xls, or .csv file.' },
         { status: 400 }
       );
     }

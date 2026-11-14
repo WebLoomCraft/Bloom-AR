@@ -346,8 +346,8 @@ function ProfileContent() {
       setStatusMessage({ type: 'error', text: 'New passwords do not match.' });
       return;
     }
-    if (newPassword.length < 8) {
-      setStatusMessage({ type: 'error', text: 'New password must be at least 8 characters long.' });
+    if (newPassword.length < 12 || !/[a-z]/.test(newPassword) || !/[A-Z]/.test(newPassword) || !/\d/.test(newPassword)) {
+      setStatusMessage({ type: 'error', text: 'New password must be at least 12 characters and include an upper-case letter, a lower-case letter, and a number.' });
       return;
     }
 
@@ -774,7 +774,7 @@ function ProfileContent() {
               <Card>
                 <CardHeader
                   title="Change Password"
-                  subtitle="Ensure your account uses a strong password with at least 8 characters."
+                  subtitle="Ensure your account uses a strong password with at least 12 characters, including upper-case, lower-case, and a number."
                 />
                 <form onSubmit={handleChangePassword} className="space-y-4">
                   <div>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { canUploadFiles } from '@/lib/auth';
 import { inspectWorkbook, CANONICAL_FIELDS } from '@/lib/file-parser';
 import { requireTenantContext } from '@/lib/tenant-context';
+import { validateUploadMeta, validateUploadSignature, uploadExtension } from '@/lib/security/files';
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,22 +31,14 @@ export async function POST(request: NextRequest) {
     const fileName = file.name;
     const fileType = fileName.split('.').pop()?.toLowerCase() || '';
 
-    if (!['xlsx', 'xls', 'csv'].includes(fileType)) {
-      return NextResponse.json(
-        {
-          error:
-            'Unsupported file format. Please upload an Excel spreadsheet (.xlsx, .xls) or comma-separated file (.csv).',
-        },
-        { status: 400 }
-      );
+    const metaCheck = validateUploadMeta(fileName, file.size);
+    if (!metaCheck.ok) {
+      return NextResponse.json({ error: metaCheck.error }, { status: metaCheck.status ?? 400 });
     }
-
-    if (file.size > 25 * 1024 * 1024) {
+    const headBytes = new Uint8Array(await file.slice(0, 1024).arrayBuffer());
+    if (!validateUploadSignature(uploadExtension(fileName), headBytes)) {
       return NextResponse.json(
-        {
-          error:
-            'The uploaded file exceeds the 25MB maximum size limit. Please upload a smaller file or split the records.',
-        },
+        { error: 'The file content does not match its extension. Upload a genuine .xlsx, .xls, or .csv file.' },
         { status: 400 }
       );
     }

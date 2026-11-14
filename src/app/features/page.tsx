@@ -16,6 +16,7 @@ const MODULES = [
   { icon: '📈', title: 'Reports & exports', points: ['Date-range KPIs and trend reports', 'User performance reporting', 'One-click CSV/Excel export'], outcome: 'Leadership reporting without spreadsheet gymnastics.' },
   { icon: '💬', title: 'Team collaboration', points: ['Role-based access (7 roles)', 'Real-time team chat & notifications', 'E-signatures, OCR intake & audit trails'], outcome: 'Billers, leads and managers in one workspace.' },
   { icon: '🏢', title: 'Organization workspaces', points: ['Isolated data per organization', 'Invitations with roles & seat limits', 'Custom subdomain / custom domain options'], outcome: 'Each practice sees only its own data — enforced server-side.' },
+  { icon: '🔐', title: 'Security in the software', points: ['MFA, 12-character passwords, revocable sessions', 'CSRF checks, rate limits & browser security headers', 'Upload type/size/content validation and audit logs'], outcome: 'Protection lives in the application, not just the hosting — details on the Security page.' },
 ];
 const JOURNEY = [['1 · Import', 'Upload AR from Excel/CSV or enter claims — columns map automatically.'], ['2 · Assign', 'Distribute work by practice, payer or balance with bulk assignment.'], ['3 · Work', 'Billers work queues with notes, documents and follow-up dates.'], ['4 · Review', 'Leads approve or send back for rework — no self-approval.'], ['5 · Get paid', 'Post ERA/payments, route denials to coding, resubmit and report.']];
 
