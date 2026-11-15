@@ -432,7 +432,9 @@ test('registration and pricing surfaces link the policies Stripe requires', () =
 
   const pricing = read('src/components/marketing/PricingClient.tsx');
   assert.match(pricing, /\/legal\/subscription/);
-  assert.match(pricing, /Prices in USD/);
+  // "Prices in USD" copy now lives in the marketing dictionary (mk.pricing.footerNote).
+  assert.match(pricing, /mk\.pricing\.footerNote/);
+  assert.match(read('src/lib/i18n/marketing.ts'), /Prices in USD/);
 
   const billing = read('src/app/settings/billing/page.tsx');
   assert.match(billing, /\/legal\/subscription/);

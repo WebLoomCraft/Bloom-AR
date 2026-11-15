@@ -1,3 +1,10 @@
+## [Unreleased] — Marketing website translation
+
+- The on-device language system now covers the **public marketing website**, not just the signed-in app: home, features, pricing (plans, comparison table, FAQs), about, FAQ, contact, accessibility, security, footer, and the legal index all render in the selected locale (Urdu, Hindi, Spanish and Arabic fully; Bangla and Punjabi for core strings, English fallback elsewhere).
+- Shipped-default CMS copy and plan-catalog copy (descriptions, best-for, CTAs, feature lists) translate through an exact-match map of the defaults; **admin-customized CMS text is never altered** and renders as authored.
+- The six legal agreements remain in authoritative English, with a translated notice on the legal index and every agreement page stating that the English text governs.
+- Same guarantees as the app translator: fully on-device dictionaries, no text sent to any external translation service, prices/trials remain USD data values.
+
 ## [Unreleased] — Software-side security hardening + public Security page
 
 - **New edge security layer** (`src/proxy.ts`): Content-Security-Policy/HSTS/nosniff/referrer/permissions headers on every response, CSRF origin validation for all state-changing API requests (compensating for the `SameSite=None` session cookie; Stripe webhook and API-key routes exempt), and per-IP burst rate limiting ahead of the database limiter.

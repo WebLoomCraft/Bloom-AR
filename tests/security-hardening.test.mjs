@@ -113,7 +113,8 @@ test('upload validation enforces extension, 25MB cap, and magic bytes', () => {
 
 test('security.txt and the /security marketing page publish only honest, implemented measures', () => {
   assert.match(read('src/app/.well-known/security.txt/route.ts'), /bloomrcm@gmail\.com/);
-  assert.match(read('src/app/security/page.tsx'), /Report a vulnerability/);
+  assert.match(read('src/app/security/page.tsx'), /mk\.security\.reportH/);
+  assert.match(read('src/lib/i18n/marketing.ts'), /Report a vulnerability/);
 
   const page = read('src/app/security/page.tsx');
   // Every headline measure maps to code that exists.
@@ -134,7 +135,8 @@ test('security.txt and the /security marketing page publish only honest, impleme
   }
   // …but the "we do not claim HIPAA certification" honesty statement is fine
   // because it is a negation — check the specific over-claim phrasing instead.
-  assert.match(page, /do not claim to be/i);
+  // The honesty statement now lives in the marketing dictionary (mk.security.claim2).
+  assert.match(read('src/lib/i18n/marketing.ts'), /do not claim to be/i);
 
   // The page is reachable from the marketing footer and nav.
   assert.match(read('src/components/marketing/Marketing.tsx'), /href="\/security"/);

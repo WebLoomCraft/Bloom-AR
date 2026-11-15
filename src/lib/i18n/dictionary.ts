@@ -1,4 +1,6 @@
 import type { LocaleCode } from './locales.ts';
+import { MARKETING_EN } from './marketing.ts';
+import { MARKETING_UR, MARKETING_HI, MARKETING_PA, MARKETING_ES, MARKETING_AR, MARKETING_BN } from './marketing-locales.ts';
 
 /**
  * Interface dictionaries. `en-US` is the source of truth; every other locale
@@ -1024,17 +1026,19 @@ const enGB: Dictionary = {
 };
 
 export const DICTIONARIES: Record<LocaleCode, Dictionary> = {
-  'en-US': en,
-  'en-GB': { ...en, ...enGB },
-  'en-PK': en,
-  'en-IN': en,
-  'ur-PK': { ...en, ...ur },
-  'hi-IN': { ...en, ...hi },
-  'pa-IN': { ...en, ...pa },
-  'es-US': { ...en, ...es },
-  ar: { ...en, ...ar },
-  'bn-BD': { ...en, ...bn },
+  'en-US': { ...en, ...MARKETING_EN },
+  'en-GB': { ...en, ...MARKETING_EN, ...enGB },
+  'en-PK': { ...en, ...MARKETING_EN },
+  'en-IN': { ...en, ...MARKETING_EN },
+  'ur-PK': { ...en, ...MARKETING_EN, ...ur, ...MARKETING_UR },
+  'hi-IN': { ...en, ...MARKETING_EN, ...hi, ...MARKETING_HI },
+  'pa-IN': { ...en, ...MARKETING_EN, ...pa, ...MARKETING_PA },
+  'es-US': { ...en, ...MARKETING_EN, ...es, ...MARKETING_ES },
+  ar: { ...en, ...MARKETING_EN, ...ar, ...MARKETING_AR },
+  'bn-BD': { ...en, ...MARKETING_EN, ...bn, ...MARKETING_BN },
 };
 
 /** Keys every locale is expected to translate (not merely inherit). */
 export const CORE_KEYS = Object.keys(en);
+/** Marketing (`mk.*`) keys defined in marketing.ts. */
+export const MARKETING_KEYS = Object.keys(MARKETING_EN);
