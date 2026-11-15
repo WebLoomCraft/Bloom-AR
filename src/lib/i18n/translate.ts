@@ -56,3 +56,23 @@ export function formatDateFor(
     return new Date(value).toLocaleDateString();
   }
 }
+
+/**
+ * Translate free text that is known to be one of the shipped English
+ * defaults (CMS copy / plan catalog — see KNOWN_TEXT in marketing.ts).
+ * Admin-customized text is not in the map and is returned unchanged, so
+ * operator-authored copy is never silently machine-reworded.
+ */
+import { KNOWN_TEXT } from './marketing.ts';
+
+export function translateKnownText(
+  locale: LocaleCode,
+  text: string | null | undefined,
+  fallback = ''
+): string {
+  if (text == null) return fallback;
+  const trimmed = text.trim();
+  if (!trimmed) return text;
+  const key = KNOWN_TEXT[trimmed];
+  return key ? translate(locale, key) : text;
+}

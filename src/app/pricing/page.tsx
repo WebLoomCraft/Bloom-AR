@@ -2,6 +2,7 @@ import { MarketingShell, H1 } from '@/components/marketing/Marketing';
 import { getSiteContent } from '@/lib/site-content';
 import PricingClient from '@/components/marketing/PricingClient';
 import { DEFAULT_PLAN_CATALOG, type PlanCatalogItem } from '@/lib/plans-shared';
+import { T } from '@/components/i18n/Mk';
 import { db } from '@/db';
 import { plans as plansTable } from '@/db/schema';
 export const dynamic = 'force-dynamic';
@@ -25,9 +26,9 @@ async function loadPlans(): Promise<{ plans: PlanCatalogItem[]; source: 'live' |
 export default async function Page() {
   const [c, { plans, source }] = await Promise.all([getSiteContent(), loadPlans()]);
   return <MarketingShell content={c}><section className="mkt-hero-bg"><div className="mx-auto max-w-6xl px-5 py-14">
-    <p className="text-xs font-bold uppercase tracking-widest text-blue-700">Pricing</p>
-    <div className="mt-2 max-w-2xl"><H1>Simple pricing that pays for itself in recovered AR.</H1></div>
-    <p className="mt-4 max-w-2xl text-lg text-slate-600">Pick a plan, start your free trial in minutes, and give your team the full AR workspace below. No setup fees, no card to try, cancel anytime.</p>
+    <p className="text-xs font-bold uppercase tracking-widest text-blue-700"><T k="mk.pricing.eyebrow" /></p>
+    <div className="mt-2 max-w-2xl"><H1><T k="mk.pricing.h1" /></H1></div>
+    <p className="mt-4 max-w-2xl text-lg text-slate-600"><T k="mk.pricing.intro" /></p>
     <PricingClient plans={plans} source={source} />
   </div></section></MarketingShell>;
 }

@@ -5,6 +5,7 @@ import { getSiteContent } from '@/lib/site-content';
 import { LegalDocumentView } from '@/components/legal/LegalDocumentView';
 import { buildLegalDocuments, LEGAL_SLUGS, isLegalSlug } from '@/lib/legal';
 import { loadLegalPlans } from '@/lib/legal/load-plans';
+import { T } from '@/components/i18n/Mk';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,6 +49,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   return (
     <MarketingShell content={content}>
+      <div className="mx-auto max-w-4xl px-5 pt-8"><p className="rounded-xl bg-blue-50 px-4 py-3 text-sm font-medium text-blue-900 ring-1 ring-blue-100" role="note"><T k="mk.legal.englishNotice" /></p></div>
       <LegalDocumentView doc={doc} relatedTitles={relatedTitles} allDocs={allDocs} />
     </MarketingShell>
   );
