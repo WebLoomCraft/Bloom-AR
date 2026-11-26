@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 
     if (entity === 'claims') {
       const conds = [eq(claims.organizationId, organizationId)];
-      if (!isSupervisorOrAbove(user.role) && !ctx.isReadOnly) {
+      if (!isSupervisorOrAbove(user.role)) {
         conds.push(eq(claims.assignedTo, user.id));
       }
       if (status) conds.push(eq(claims.status, status as (typeof claims.status.enumValues)[number]));
@@ -107,7 +107,7 @@ export async function GET(request: NextRequest) {
       fileName = 'claims_export';
     } else if (entity === 'authorizations') {
       const conds = [eq(authorizations.organizationId, organizationId)];
-      if (!isSupervisorOrAbove(user.role) && !ctx.isReadOnly) {
+      if (!isSupervisorOrAbove(user.role)) {
         conds.push(eq(authorizations.assignedTo, user.id));
       }
       if (status) {
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
       fileName = 'authorizations_export';
     } else if (entity === 'tasks') {
       const conds = [eq(billingTasks.organizationId, organizationId)];
-      if (!isSupervisorOrAbove(user.role) && !ctx.isReadOnly) {
+      if (!isSupervisorOrAbove(user.role)) {
         conds.push(eq(billingTasks.assignedTo, user.id));
       }
       if (status) {

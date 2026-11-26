@@ -6,6 +6,11 @@ import { verifyClaimInOrg } from '@/lib/rbac';
 import { createNotification } from '@/lib/notifications';
 import { cleanUuid, cleanLimit } from '@/lib/sanitize';
 import { requireTenantContext } from '@/lib/tenant-context';
+import {
+  validateDocumentUpload,
+  sanitizeFileName,
+  CHAT_ATTACHMENT_MAX_BYTES,
+} from '@/lib/security/files';
 
 async function verifyOrgChannelMember(
   channelId: string,
@@ -150,10 +155,22 @@ export async function POST(
       relatedClaimId = cleanUuid(formData.get('relatedClaimId'));
       if (file) {
         messageType = 'file';
-        fileName = file.name;
+        // Reject oversized attachments before reading them into memory.
+        if (file.size > CHAT_ATTACHMENT_MAX_BYTES) {
+          return NextResponse.json(
+            { error: 'Attachment exceeds the 10MB maximum size limit.' },
+            { status: 413 }
+          );
+        }
         const buffer = Buffer.from(await file.arrayBuffer());
+        const verdict = validateDocumentUpload(file.name, file.size, buffer, CHAT_ATTACHMENT_MAX_BYTES);
+        if (!verdict.ok) {
+          return NextResponse.json({ error: verdict.error }, { status: verdict.status || 400 });
+        }
+        fileName = sanitizeFileName(file.name);
         fileData = buffer.toString('base64');
-        fileMimeType = file.type || 'application/octet-stream';
+        // Store the signature-verified type, never the client-declared one.
+        fileMimeType = verdict.mimeType;
         if (!content) content = `📎 ${fileName}`;
       }
     } else {

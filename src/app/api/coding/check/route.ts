@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       if (!claim) {
         return NextResponse.json({ error: 'Claim not found' }, { status: 404 });
       }
-      if (!ctx.isReadOnly && !isSupervisorOrAbove(user.role)) {
+      if (!isSupervisorOrAbove(user.role)) {
         const authPractices = await getUserAuthorizedPracticeIds(user, organizationId);
         const allowedByPractice =
           authPractices === 'all' ||

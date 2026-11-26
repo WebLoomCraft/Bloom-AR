@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const canSeeOrgWide = isSupervisorOrAbove(user.role) || ctx.isReadOnly;
+    const canSeeOrgWide = isSupervisorOrAbove(user.role);
     const targetUserId = userId || (canSeeOrgWide ? null : user.id);
 
     const baseConds = [eq(claims.organizationId, organizationId)];

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     const { ctx } = auth;
     const { user, organizationId } = ctx;
 
-    if (!isSupervisorOrAbove(user.role) && !ctx.isReadOnly) {
+    if (!isSupervisorOrAbove(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

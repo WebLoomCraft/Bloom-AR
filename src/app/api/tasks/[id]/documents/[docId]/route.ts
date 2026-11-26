@@ -5,6 +5,7 @@ import { eq, and } from 'drizzle-orm';
 import { isSupervisorOrAbove } from '@/lib/auth';
 import { canViewUser } from '@/lib/rbac';
 import { requireTenantContext } from '@/lib/tenant-context';
+import { safeDownloadHeaders } from '@/lib/security/files';
 
 export async function GET(
   _request: NextRequest,
@@ -26,8 +27,7 @@ export async function GET(
     if (!task) return NextResponse.json({ error: 'Task not found' }, { status: 404 });
 
     if (
-      !ctx.isReadOnly &&
-      !isSupervisorOrAbove(user.role) &&
+            !isSupervisorOrAbove(user.role) &&
       task.assignedBy !== user.id &&
       (!task.assignedTo || !(await canViewUser(user, task.assignedTo, organizationId)))
     ) {
@@ -52,8 +52,7 @@ export async function GET(
     return new NextResponse(buffer, {
       status: 200,
       headers: {
-        'Content-Type': doc.mimeType || 'application/octet-stream',
-        'Content-Disposition': `attachment; filename="${doc.fileName.replace(/"/g, '')}"`,
+        ...safeDownloadHeaders(doc.fileName),
         'Content-Length': String(buffer.length),
       },
     });

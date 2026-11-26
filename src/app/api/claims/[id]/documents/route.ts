@@ -5,6 +5,7 @@ import { and, eq, desc } from 'drizzle-orm';
 import { canAccessClaim } from '@/lib/rbac';
 import { createAuditLog, AUDIT_ACTIONS } from '@/lib/audit';
 import { requireTenantContext } from '@/lib/tenant-context';
+import { validateDocumentUpload, sanitizeFileName } from '@/lib/security/files';
 
 export async function GET(
   _request: NextRequest,
@@ -17,7 +18,7 @@ export async function GET(
     const { user, organizationId } = ctx;
 
     const { id } = await params;
-    if (!ctx.isReadOnly && !(await canAccessClaim(user, id, organizationId))) {
+    if (!(await canAccessClaim(user, id, organizationId))) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
 
@@ -105,10 +106,15 @@ export async function POST(
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File too large (max 10MB)' }, { status: 400 });
+      return NextResponse.json({ error: 'File too large (max 10MB)' }, { status: 413 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const verdict = validateDocumentUpload(file.name, file.size, buffer);
+    if (!verdict.ok) {
+      return NextResponse.json({ error: verdict.error }, { status: verdict.status || 400 });
+    }
+    const safeFileName = sanitizeFileName(file.name);
     const fileData = buffer.toString('base64');
 
     const [document] = await db
@@ -117,9 +123,9 @@ export async function POST(
         organizationId,
         claimId: id,
         documentType,
-        fileName: file.name,
+        fileName: safeFileName,
         fileData,
-        mimeType: file.type || 'application/octet-stream',
+        mimeType: verdict.mimeType!,
         uploadedBy: user.id,
       })
       .returning();
@@ -138,7 +144,7 @@ export async function POST(
       action: auditAction,
       entityType: 'claimDocument',
       entityId: document.id,
-      newValue: { claimId: id, documentType, fileName: file.name },
+      newValue: { claimId: id, documentType, fileName: safeFileName },
       ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
       userAgent: request.headers.get('user-agent') || undefined,
     });

@@ -21,10 +21,11 @@ async function canAccessTask(
   user: User,
   task: typeof billingTasks.$inferSelect,
   organizationId: string,
-  isReadOnly: boolean
+  _isReadOnly?: boolean
 ): Promise<boolean> {
   if (task.organizationId !== organizationId) return false;
-  if (isReadOnly || isSupervisorOrAbove(user.role)) return true;
+  // Read-only restricts writes; it does not widen visibility.
+  if (isSupervisorOrAbove(user.role)) return true;
   if (task.assignedBy === user.id) return true;
   if (!task.assignedTo) return false;
   return canViewUser(user, task.assignedTo, organizationId);

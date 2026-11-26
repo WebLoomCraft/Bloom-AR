@@ -14,6 +14,13 @@ import { createAuditLog, AUDIT_ACTIONS } from '@/lib/audit';
 import { ensureSaaSColumns, safeErrorDetail } from '@/lib/db-schema';
 import { cleanDate } from '@/lib/sanitize';
 import { requireTenantContext } from '@/lib/tenant-context';
+import {
+  evaluateGenericClaimStatusTransition,
+  findProtectedClaimFields,
+  CLAIM_PRIORITIES,
+} from '@/lib/claims-authz';
+import { canAccessClaim } from '@/lib/rbac';
+import { logSecurityEvent } from '@/lib/security-log';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -44,7 +51,6 @@ export async function GET(
     }
 
     if (
-      !ctx.isReadOnly &&
       ['ar_executive', 'billing_user'].includes(user.role) &&
       claim.assignedTo !== user.id
     ) {
@@ -313,6 +319,22 @@ export async function PATCH(
     ) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
+    if (
+      ['team_lead', 'senior_lead'].includes(user.role) &&
+      !(await canAccessClaim(user, id, organizationId))
+    ) {
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+    }
+
+    // Protected workflow fields (approvedBy, organizationId, ...) are never
+    // client-writable through this endpoint — reject, don't silently strip.
+    const protectedFields = findProtectedClaimFields(body as Record<string, unknown>);
+    if (protectedFields.length > 0) {
+      return NextResponse.json(
+        { error: `These fields cannot be modified directly: ${protectedFields.join(', ')}` },
+        { status: 400 }
+      );
+    }
 
     const updateData: Partial<typeof claims.$inferInsert> = {};
 
@@ -360,7 +382,12 @@ export async function PATCH(
       updateData.balance =
         body.balance !== '' && body.balance !== null ? String(body.balance) : null;
     }
-    if (body.priority !== undefined) updateData.priority = body.priority;
+    if (body.priority !== undefined) {
+      if (!(CLAIM_PRIORITIES as readonly string[]).includes(body.priority)) {
+        return NextResponse.json({ error: 'Invalid priority.' }, { status: 400 });
+      }
+      updateData.priority = body.priority;
+    }
     if (body.subStatus !== undefined) updateData.subStatus = body.subStatus || null;
     if (body.claimInsuranceStatus !== undefined) {
       updateData.claimInsuranceStatus = body.claimInsuranceStatus || null;
@@ -379,6 +406,16 @@ export async function PATCH(
     if (body.denialReason !== undefined) updateData.denialReason = body.denialReason || null;
 
     if (body.status && body.status !== existingClaim.status) {
+      const verdict = evaluateGenericClaimStatusTransition(existingClaim.status, body.status);
+      if (!verdict.allowed) {
+        if (verdict.status === 403) {
+          logSecurityEvent('authz.claim_review_bypass_blocked', {
+            userId: user.id, organizationId, claimId: id,
+            from: existingClaim.status, to: String(body.status), role: user.role,
+          });
+        }
+        return NextResponse.json({ error: verdict.error }, { status: verdict.status });
+      }
       updateData.status = body.status;
       if (body.status === 'in_progress' && existingClaim.workflowStatus === 'unworked') {
         updateData.workflowStatus = 'working';
@@ -387,12 +424,6 @@ export async function PATCH(
       } else if (body.status === 'submitted_for_review') {
         updateData.workflowStatus = 'pending_approval';
         updateData.submittedForApprovalAt = new Date();
-      } else if (body.status === 'rework_required') {
-        updateData.workflowStatus = 'rework';
-      } else if (body.status === 'approved') {
-        updateData.workflowStatus = 'approved';
-        updateData.approvedBy = user.id;
-        updateData.approvedAt = new Date();
       }
 
       await db.insert(claimStatusHistory).values({

@@ -1,12 +1,19 @@
 import { db } from "@/db";
 import { sql } from "drizzle-orm";
 import { ensureSaaSColumns, safeErrorDetail } from "@/lib/db-schema";
+import { assertNoDemoModeInProduction } from "@/lib/demo-guard";
 
 export const dynamic = "force-dynamic";
 
 /** Diagnostics without secrets: DB reachability + automatic schema bootstrap on empty Neon DBs. */
 export async function GET() {
   try {
+    // Fail-safe configuration checks: demo mode must never be enabled in a
+    // production deployment (throws → 500 → deployment health check fails).
+    assertNoDemoModeInProduction();
+    if (process.env.NODE_ENV === "production" && !(process.env.JWT_SECRET && process.env.JWT_SECRET.length >= 16)) {
+      throw new Error("JWT_SECRET (>=16 characters) is required in production");
+    }
     await db.execute(sql`select 1`);
     const schema = await ensureSaaSColumns();
     const cols = await db.execute(

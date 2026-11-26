@@ -132,7 +132,17 @@ SMTP_FROM="BloomRCM <bloomrcm@gmail.com>"
 
 ---
 
-## 👥 Default Credentials
+## 👥 Default Credentials — DEMO ONLY
+
+> ⚠️ **Demo/test credentials for local evaluation only.** These accounts are
+> intentional public demo logins for a disposable local/demo database — they
+> are **not** real production account credentials. Demo-account logins are
+> blocked in production deployments (`NODE_ENV=production`) unless the whole
+> deployment is an explicitly isolated demo (`DEMO_ENVIRONMENT=true`) running
+> on a throwaway database with no customer, organization, patient, claim,
+> billing, or PHI data. Never create these accounts in a production database,
+> and never grant them platform-administrator privileges.
+
 
 | Role | Email | Password |
 |------|-------|----------|

@@ -34,9 +34,9 @@ export async function GET(request: NextRequest) {
     const conditions = [eq(claims.organizationId, organizationId)];
 
     // Role-based filtering inside the active organization
-    if (!ctx.isReadOnly && ['ar_executive', 'billing_user'].includes(user.role)) {
+    if (['ar_executive', 'billing_user'].includes(user.role)) {
       conditions.push(eq(claims.assignedTo, user.id));
-    } else if (!ctx.isReadOnly && ['team_lead', 'senior_lead'].includes(user.role)) {
+    } else if (['team_lead', 'senior_lead'].includes(user.role)) {
       const teamMembers = await db
         .select({ userId: organizationMembers.userId })
         .from(organizationMembers)

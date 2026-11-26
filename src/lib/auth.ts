@@ -24,6 +24,9 @@ function resolveJwtSecretBytes(): Uint8Array {
   );
 }
 
+export const JWT_ISSUER = 'bloomar-manager';
+export const JWT_AUDIENCE = 'bloomar-web';
+
 const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days absolute
 const MAX_SERVER_IDLE_MS = 8 * 60 * 60 * 1000; // 8 hours server-side idle window
 
@@ -69,6 +72,8 @@ export async function createSession(
 
   const token = await new SignJWT({ userId })
     .setProtectedHeader({ alg: 'HS256' })
+    .setIssuer(JWT_ISSUER)
+    .setAudience(JWT_AUDIENCE)
     .setJti(randomUUID())
     .setExpirationTime('7d')
     .setIssuedAt()
@@ -92,7 +97,7 @@ export async function createSession(
 
 export async function verifySessionWithDetails(token: string): Promise<SessionWithUser | null> {
   try {
-    await jwtVerify(token, resolveJwtSecretBytes());
+    await jwtVerify(token, resolveJwtSecretBytes(), { issuer: JWT_ISSUER, audience: JWT_AUDIENCE, algorithms: ['HS256'] });
     await ensureSaaSColumns();
 
     const [session] = await db

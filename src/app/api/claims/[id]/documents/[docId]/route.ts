@@ -5,6 +5,7 @@ import { eq, and } from 'drizzle-orm';
 import { canAccessClaim } from '@/lib/rbac';
 import { cleanUuid } from '@/lib/sanitize';
 import { requireTenantContext } from '@/lib/tenant-context';
+import { safeDownloadHeaders } from '@/lib/security/files';
 
 export async function GET(
   _request: NextRequest,
@@ -45,12 +46,10 @@ export async function GET(
     }
 
     const buffer = Buffer.from(doc.fileData, 'base64');
-    const safeName = doc.fileName.replace(/["\r\n]/g, '_');
 
     return new NextResponse(buffer, {
       headers: {
-        'Content-Type': doc.mimeType || 'application/octet-stream',
-        'Content-Disposition': `attachment; filename="${safeName}"`,
+        ...safeDownloadHeaders(doc.fileName),
         'Content-Length': String(buffer.length),
       },
     });

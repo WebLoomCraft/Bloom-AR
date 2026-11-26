@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 
     const conditions = [eq(billingTasks.organizationId, organizationId)];
 
-    if (!ctx.isReadOnly && !['administrator', 'supervisor', 'manager'].includes(user.role)) {
+    if (!['administrator', 'supervisor', 'manager'].includes(user.role)) {
       const authorizedUsers = await getUserAuthorizedUserIds(user, organizationId);
       if (authorizedUsers.length > 0) {
         conditions.push(inArray(billingTasks.assignedTo, authorizedUsers));

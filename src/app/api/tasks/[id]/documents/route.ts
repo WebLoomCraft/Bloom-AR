@@ -4,6 +4,9 @@ import { billingTasks, taskDocuments, users } from '@/db/schema';
 import { and, eq, desc } from 'drizzle-orm';
 import { createAuditLog } from '@/lib/audit';
 import { requireTenantContext } from '@/lib/tenant-context';
+import { isSupervisorOrAbove } from '@/lib/auth';
+import { canViewUser } from '@/lib/rbac';
+import { validateDocumentUpload, sanitizeFileName } from '@/lib/security/files';
 
 export async function GET(
   _request: NextRequest,
@@ -92,40 +95,24 @@ export async function POST(
       );
     }
 
-    const allowedTypes = [
-      'application/pdf',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel',
-      'text/csv',
-      'text/plain',
-      'image/png',
-      'image/jpeg',
-      'image/webp',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    ];
-    const ext = (file.name.split('.').pop() || '').toLowerCase();
-    const allowedExts = [
-      'pdf',
-      'xlsx',
-      'xls',
-      'csv',
-      'txt',
-      'png',
-      'jpg',
-      'jpeg',
-      'webp',
-      'doc',
-      'docx',
-    ];
-    if (!allowedTypes.includes(file.type) && !allowedExts.includes(ext)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Allowed: PDF, XLSX, XLS, CSV, TXT, PNG, JPG, DOC, DOCX' },
-        { status: 400 }
-      );
+    if (
+      !isSupervisorOrAbove(user.role) &&
+      task.assignedBy !== user.id &&
+      task.assignedTo !== user.id &&
+      (!task.assignedTo || !(await canViewUser(user, task.assignedTo, organizationId)))
+    ) {
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File too large (max 10MB)' }, { status: 413 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const verdict = validateDocumentUpload(file.name, file.size, buffer);
+    if (!verdict.ok) {
+      return NextResponse.json({ error: verdict.error }, { status: verdict.status || 400 });
+    }
+    const safeFileName = sanitizeFileName(file.name);
     const fileData = buffer.toString('base64');
 
     const [document] = await db
@@ -134,9 +121,9 @@ export async function POST(
         organizationId,
         taskId: id,
         documentType,
-        fileName: file.name,
+        fileName: safeFileName,
         fileData,
-        mimeType: file.type,
+        mimeType: verdict.mimeType!,
         fileSize: file.size,
         uploadedBy: user.id,
         status: 'pending',
@@ -150,7 +137,7 @@ export async function POST(
       action: 'task_document_uploaded',
       entityType: 'taskDocument',
       entityId: document.id,
-      newValue: { taskId: id, documentType, fileName: file.name },
+      newValue: { taskId: id, documentType, fileName: safeFileName },
       ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
       userAgent: request.headers.get('user-agent') || undefined,
     });

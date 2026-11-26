@@ -5,6 +5,7 @@ import { eq, desc, ilike, or } from 'drizzle-orm';
 import { getCurrentUser } from '@/lib/auth';
 import { requirePlatformAdmin } from '@/lib/platform-admin';
 import { createAuditLog } from '@/lib/audit';
+import { isDemoAccountEmail } from '@/lib/demo-guard';
 const guard = requirePlatformAdmin;
 export async function GET(req: NextRequest) {
   if (!await guard()) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -22,7 +23,11 @@ export async function PATCH(req: NextRequest) {
   if (!target) return NextResponse.json({ error: 'User not found' }, { status: 404 });
   if (action === 'activate') await db.update(users).set({ isActive: true, accountStatus: 'active' }).where(eq(users.id, userId));
   else if (action === 'deactivate') { await db.update(users).set({ isActive: false, accountStatus: 'suspended' }).where(eq(users.id, userId)); await db.delete(sessions).where(eq(sessions.userId, userId)); }
-  else if (action === 'make_platform_admin') await db.update(users).set({ isPlatformAdmin: true }).where(eq(users.id, userId));
+  else if (action === 'make_platform_admin') {
+    // Demo accounts (README-published credentials) must never become platform administrators.
+    if (isDemoAccountEmail(target.email)) return NextResponse.json({ error: 'Demo accounts cannot be granted platform administrator privileges.' }, { status: 403 });
+    await db.update(users).set({ isPlatformAdmin: true }).where(eq(users.id, userId));
+  }
   else if (action === 'remove_platform_admin') await db.update(users).set({ isPlatformAdmin: false }).where(eq(users.id, userId));
   else if (action === 'revoke_sessions') await db.delete(sessions).where(eq(sessions.userId, userId));
   else if (action === 'mark_verified') await db.update(users).set({ emailVerifiedAt: new Date(), accountStatus: 'active' }).where(eq(users.id, userId));

@@ -35,10 +35,11 @@ async function checkCodingRequestAccess(
   codingReq: typeof codingRequests.$inferSelect,
   claim: typeof claims.$inferSelect | undefined,
   organizationId: string,
-  isReadOnly: boolean
+  _isReadOnly?: boolean
 ): Promise<boolean> {
   if (codingReq.organizationId !== organizationId) return false;
-  if (isReadOnly || isSupervisorOrAbove(user.role)) return true;
+  // Read-only restricts writes; it does not widen visibility.
+  if (isSupervisorOrAbove(user.role)) return true;
   if (codingReq.sentBy === user.id || codingReq.assignedTo === user.id) return true;
   if (!claim) return false;
   const authPractices = await getUserAuthorizedPracticeIds(user, organizationId);

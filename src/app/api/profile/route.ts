@@ -401,7 +401,7 @@ export async function GET() {
       canReviewClaims: !isReadOnly && canReviewClaims(effectiveRole),
       canReviewSignoffs: !isReadOnly && canReviewSignoffs(effectiveRole),
       canManageUsers: !isReadOnly && canManageUsers(effectiveRole),
-      canViewReports: canViewReports(effectiveRole) || isReadOnly,
+      canViewReports: canViewReports(effectiveRole),
       isSupervisorOrAbove: isSupervisorOrAbove(effectiveRole),
     };
 

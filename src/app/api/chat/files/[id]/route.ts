@@ -3,6 +3,7 @@ import { db } from '@/db';
 import { chatChannels, chatMessages, chatMembers } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { requireTenantContext } from '@/lib/tenant-context';
+import { safeDownloadHeaders } from '@/lib/security/files';
 
 export async function GET(
   _request: NextRequest,
@@ -52,8 +53,7 @@ export async function GET(
     return new NextResponse(buffer, {
       status: 200,
       headers: {
-        'Content-Type': message.fileMimeType,
-        'Content-Disposition': `attachment; filename="${fileName.replace(/"/g, '')}"`,
+        ...safeDownloadHeaders(fileName),
         'Content-Length': String(buffer.length),
       },
     });

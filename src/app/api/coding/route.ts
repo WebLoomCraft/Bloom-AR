@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
     const limit = cleanLimit(sp.get('limit'), 20, 100);
 
     const visibilityConditions = [eq(codingRequests.organizationId, organizationId)];
-    if (!ctx.isReadOnly && !isSupervisorOrAbove(user.role)) {
+    if (!isSupervisorOrAbove(user.role)) {
       const authPractices = await getUserAuthorizedPracticeIds(user, organizationId);
       const authUsers = await getUserAuthorizedUserIds(user, organizationId);
       const vis = [];

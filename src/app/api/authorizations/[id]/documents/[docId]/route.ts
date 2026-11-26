@@ -4,6 +4,7 @@ import { authDocuments, authorizations } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { canViewUser } from '@/lib/rbac';
 import { requireTenantContext } from '@/lib/tenant-context';
+import { safeDownloadHeaders } from '@/lib/security/files';
 
 export async function GET(
   _request: NextRequest,
@@ -24,7 +25,6 @@ export async function GET(
     if (!auth) return NextResponse.json({ error: 'Authorization not found' }, { status: 404 });
 
     if (
-      !ctx.isReadOnly &&
       !['administrator', 'supervisor', 'manager'].includes(user.role) &&
       auth.assignedBy !== user.id &&
       (!auth.assignedTo || !(await canViewUser(user, auth.assignedTo, organizationId)))
@@ -50,8 +50,7 @@ export async function GET(
     return new NextResponse(buffer, {
       status: 200,
       headers: {
-        'Content-Type': doc.mimeType || 'application/octet-stream',
-        'Content-Disposition': `attachment; filename="${doc.fileName.replace(/"/g, '')}"`,
+        ...safeDownloadHeaders(doc.fileName),
         'Content-Length': String(buffer.length),
       },
     });

@@ -57,6 +57,8 @@ const lastName = process.env.PLATFORM_ADMIN_LAST_NAME || 'Admin';
 const url = process.env.DATABASE_URL || process.env.DATABASE_URL_POOLED || process.env.NEON_DATABASE_URL;
 if (!url) { console.error('DATABASE_URL, DATABASE_URL_POOLED, or NEON_DATABASE_URL is required.'); process.exit(1); }
 if (!email || !/^\S+@\S+\.\S+$/.test(email)) { console.error('PLATFORM_ADMIN_EMAIL must be a valid email (set it privately, do not commit it).'); process.exit(1); }
+const DEMO_EMAILS = ['ali.mukhtar@medicalbilling.com','admin@medicalbilling.com','supervisor@medicalbilling.com','manager@medicalbilling.com','teamlead@medicalbilling.com','executive@medicalbilling.com','billing@medicalbilling.com'];
+if (DEMO_EMAILS.includes(email)) { console.error('Refusing to bootstrap a demo account (README demo credentials) as platform admin.'); process.exit(1); }
 if (tempPassword && tempPassword.length < 10) { console.error('PLATFORM_ADMIN_TEMP_PASSWORD must be at least 10 characters.'); process.exit(1); }
 
 const pool = new Pool(buildConfig(url));

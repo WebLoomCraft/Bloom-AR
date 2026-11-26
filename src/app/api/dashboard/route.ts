@@ -14,10 +14,9 @@ export async function GET() {
     const baseOrgCond = eq(claims.organizationId, organizationId);
     let scopeCond = baseOrgCond;
 
-    if (ctx.isReadOnly) {
-      // Read-only workspace observers/auditors see aggregate KPIs of their active organization
-      scopeCond = baseOrgCond;
-    } else if (user.role === 'ar_executive' || user.role === 'billing_user') {
+    // Read-only members keep their role's normal visibility scope (their
+    // effective role is ar_executive) — read-only never widens reads.
+    if (user.role === 'ar_executive' || user.role === 'billing_user') {
       scopeCond = and(baseOrgCond, eq(claims.assignedTo, user.id))!;
     } else if (user.role === 'team_lead' || user.role === 'senior_lead') {
       const teamMembers = await db

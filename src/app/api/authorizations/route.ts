@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     const limit = cleanLimit(sp.get('limit'), 20, 100);
 
     const baseConditions = [eq(authorizations.organizationId, organizationId)];
-    if (!ctx.isReadOnly && !['administrator', 'supervisor', 'manager'].includes(user.role)) {
+    if (!['administrator', 'supervisor', 'manager'].includes(user.role)) {
       const authorizedUsers = await getUserAuthorizedUserIds(user, organizationId);
       if (authorizedUsers.length > 0) {
         baseConditions.push(inArray(authorizations.assignedTo, authorizedUsers));

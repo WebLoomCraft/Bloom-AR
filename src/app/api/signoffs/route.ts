@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     const conditions = [eq(signoffs.organizationId, organizationId)];
 
-    if (!ctx.isReadOnly && !canReviewSignoffs(user.role)) {
+    if (!canReviewSignoffs(user.role)) {
       conditions.push(eq(signoffs.submittedBy, user.id));
     }
 

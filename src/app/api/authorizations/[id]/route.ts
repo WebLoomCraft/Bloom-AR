@@ -12,10 +12,11 @@ async function canAccessAuth(
   user: User,
   authRow: typeof authorizations.$inferSelect,
   organizationId: string,
-  isReadOnly: boolean
+  _isReadOnly?: boolean
 ): Promise<boolean> {
   if (authRow.organizationId !== organizationId) return false;
-  if (isReadOnly || ['administrator', 'supervisor', 'manager'].includes(user.role)) return true;
+  // Read-only members keep their normal visibility scope — read-only restricts writes, it never widens reads.
+  if (['administrator', 'supervisor', 'manager'].includes(user.role)) return true;
   if (authRow.assignedBy === user.id) return true;
   if (!authRow.assignedTo) return false;
   return canViewUser(user, authRow.assignedTo, organizationId);

@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
 
 // Configure transporter - uses env vars, falls back to ethereal for dev
-let transporter: nodemailer.Transporter | null = null;
+type Transporter = ReturnType<typeof nodemailer.createTransport>;
+let transporter: Transporter | null = null;
 
 async function getTransporter() {
   if (transporter) return transporter;

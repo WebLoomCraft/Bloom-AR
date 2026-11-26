@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     // Unconditional organization boundary — never omitted regardless of session vs API key!
     const conditions = [eq(claims.organizationId, organizationId)];
 
-    if (!isSupervisorOrAbove(user.role) && !ctx.isReadOnly) {
+    if (!isSupervisorOrAbove(user.role)) {
       const authorizedPractices = await getUserAuthorizedPracticeIds(user, organizationId);
       const authorizedUsers = await getUserAuthorizedUserIds(user, organizationId);
       const visibility = [];

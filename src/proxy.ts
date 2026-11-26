@@ -22,10 +22,15 @@ const WINDOW_MS = 60_000;
 function burstLimit(req: NextRequest): number | null {
   const path = req.nextUrl.pathname;
   if (!path.startsWith('/api/')) return null;
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown';
+  // Only trust forwarded IP headers behind a declared trusted proxy
+  // (TRUST_PROXY_HEADERS=true or a Vercel deployment); otherwise they are
+  // client-controlled and must not steer rate limiting.
+  const trustProxy = process.env.TRUST_PROXY_HEADERS === 'true' || Boolean(process.env.VERCEL);
+  const ip = trustProxy
+    ? req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      req.headers.get('x-real-ip') ||
+      'unknown'
+    : 'unknown';
   const isAuth = path.startsWith('/api/auth/');
   const limit = isAuth ? 60 : 600; // per minute per IP; DB limiter is stricter per endpoint
   const key = `${ip}:${isAuth ? 'auth' : 'api'}`;
@@ -35,6 +40,8 @@ function burstLimit(req: NextRequest): number | null {
     buckets.set(key, { count: 1, resetAt: now + WINDOW_MS });
     if (buckets.size > 5000) {
       for (const [k, v] of buckets) if (now > v.resetAt) buckets.delete(k);
+      // Hard bound: never let the map grow without limit.
+      if (buckets.size > 10000) buckets.clear();
     }
     return null;
   }

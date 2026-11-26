@@ -9,6 +9,8 @@ import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 import { ensureSaaSColumns, schemaHint, safeErrorDetail } from '@/lib/db-schema';
 import { decryptMfaSecret, verifyTotpCode, hashRecoveryCode } from '@/lib/mfa';
 import { mapOrgRoleToOperationalRole } from '@/lib/tenant-context';
+import { isDemoLoginBlocked } from '@/lib/demo-guard';
+import { logSecurityEvent } from '@/lib/security-log';
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,6 +46,16 @@ export async function POST(request: NextRequest) {
 
     const { email, password, mfaCode } = await request.json();
 
+    // Demo credentials (published in the README, demo-only) can never
+    // authenticate against a production deployment.
+    if (isDemoLoginBlocked(email)) {
+      logSecurityEvent('auth.demo_login_blocked', {
+        email: String(email).toLowerCase().trim(),
+        ip: clientIp,
+      });
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+    }
+
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
@@ -58,6 +70,7 @@ export async function POST(request: NextRequest) {
       .limit(1);
 
     if (!user) {
+      logSecurityEvent('auth.login_failure', { email: String(email).toLowerCase().trim(), ip: clientIp, reason: 'unknown_user' });
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
@@ -91,6 +104,7 @@ export async function POST(request: NextRequest) {
       isValidPassword = await verifyPassword(rawPassword.trim(), user.passwordHash);
     }
     if (!isValidPassword) {
+      logSecurityEvent('auth.login_failure', { email: user.email, userId: user.id, ip: clientIp, reason: 'bad_password' });
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
@@ -134,6 +148,7 @@ export async function POST(request: NextRequest) {
       }
 
       if (!totpOk && !recoveryOk) {
+        logSecurityEvent('auth.mfa_failure', { email: user.email, userId: user.id, ip: clientIp });
         return NextResponse.json(
           {
             error: 'Invalid two-factor authentication code',

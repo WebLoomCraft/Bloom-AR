@@ -1,3 +1,12 @@
+## [Unreleased] — Security hardening pass (claims, read-only, uploads, auth)
+
+- **Critical fix:** generic `PATCH /api/claims/[id]` could set `status: "approved"` and stamp `approvedBy` with the caller — any assignee could self-approve. Review outcomes are now 403 through the generic endpoint (dedicated review endpoints only), transitions are validated, and protected fields are rejected.
+- **Read-only visibility:** removed the systematic `!ctx.isReadOnly` bypass that let read-only members see all claims/documents/exports in an organization; role visibility now always applies.
+- **Uploads:** chat/claim/authorization/task attachments get allow-list + magic-byte validation, 10MB/413 handling, sanitized filenames, signature-derived MIME types, and safe download headers (attachment + nosniff + sandbox CSP).
+- **Password reset** tokens are consumed atomically in one transaction (single-use under concurrency, sessions revoked in the same transaction). **Rate limiting** is advisory-lock atomic across instances and fails closed for auth endpoints; forwarded IP headers are trusted only behind a declared proxy.
+- **JWT** issuer/audience/algorithm pinning (existing sessions invalidated once). **Demo accounts** (README credentials kept intentionally) cannot authenticate in production, cannot become platform admins, and enabling demo flags in production fails the health check.
+- Dependencies: Next.js 16.4.6, nodemailer 10, postcss 8.5.33 — `npm audit`: 0 critical (remaining: xlsx high with no upstream npm fix; drizzle-kit/esbuild moderate, dev-only). Added Dependabot + GitHub security workflow and structured security-event logging.
+
 ## [Unreleased] — Marketing website translation
 
 - The on-device language system now covers the **public marketing website**, not just the signed-in app: home, features, pricing (plans, comparison table, FAQs), about, FAQ, contact, accessibility, security, footer, and the legal index all render in the selected locale (Urdu, Hindi, Spanish and Arabic fully; Bangla and Punjabi for core strings, English fallback elsewhere).
